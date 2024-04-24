@@ -43,12 +43,9 @@ export default function Join() {
 
   const handleIdCheck = async () => {
     try {
-      const response = await axios.post(
-        "https://ec2-13-209-41-40.ap-northeast-2.compute.amazonaws.com/users/checkDuplicate_id",
-        {
-          userId: id,
-        }
-      );
+      const response = await axios.post("/api/users/checkDuplicate_id", {
+        userId: id,
+      });
       if (response.status === 200) {
         setIdValid(true);
       } else {

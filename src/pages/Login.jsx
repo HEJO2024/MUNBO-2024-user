@@ -36,13 +36,10 @@ export default function Login() {
     }
 
     try {
-      const response = await axios.post(
-        "https://ec2-13-209-41-40.ap-northeast-2.compute.amazonaws.com/users/login",
-        {
-          userId: id,
-          passwd: password,
-        }
-      );
+      const response = await axios.post("/api/users/login", {
+        userId: id,
+        passwd: password,
+      });
 
       if (response.status === 200) {
         navigate("/");
