@@ -1,0 +1,10 @@
+@font-face {
+  font-family: "Pretendard";
+  font-display: swap;
+
+  src: url("./Pretendard-Regular.woff2") format("woff2");
+
+  /* 사용할 폰트의 기본 스타일 */
+  font-weight: 400;
+  font-style: normal;
+}

@@ -1,0 +1,24 @@
+.ans {
+  width: 85%;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-bottom: 3rem;
+}
+.ans__btn {
+  border: none;
+  border-radius: 3.125rem;
+  background: #fae588;
+  box-shadow: 0px 1px 2px 0px rgba(60, 64, 67, 0.3),
+    0px 2px 6px 2px rgba(60, 64, 67, 0.15);
+  color: #805b10;
+  font-size: 1.125rem;
+  font-weight: 600;
+  padding: 10px 25px;
+  cursor: pointer;
+}
+.ans__btn--next {
+  background: #805b10;
+  color: #fae588;
+}

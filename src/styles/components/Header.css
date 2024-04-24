@@ -1,0 +1,45 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 1.95px 1.95px 2.6px 0px rgba(0, 0, 0, 0.15);
+  z-index: 20;
+}
+.header__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding: 0 18px;
+}
+.header__start {
+  cursor: pointer;
+}
+.header__logo {
+  margin-right: 4px;
+  margin-bottom: 8px;
+}
+.header__munbo {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+.header__end {
+  display: flex;
+  align-items: center;
+}
+.header__login {
+  font-size: 1.3rem;
+  font-weight: 500;
+  margin-right: 15px;
+  cursor: pointer;
+}
+.header__user {
+  font-size: 1rem;
+  margin-right: 15px;
+}
+.header__user b {
+  font-size: 1.2rem;
+  font-weight: 500;
+}

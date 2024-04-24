@@ -1,0 +1,41 @@
+.menubar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f5f5f5;
+  z-index: 20;
+}
+.menubar__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 85px;
+  padding: 0 50px 15px 50px;
+}
+.menubar__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.menubar__container:nth-child(1) {
+  margin-bottom: 0.3rem;
+}
+.menubar__container:nth-child(3) {
+  margin-top: 0.5rem;
+}
+.menubar__container span {
+  font-size: 0.6875rem;
+  font-weight: 600;
+}
+.menubar__icon--home {
+  margin-bottom: 0.5rem;
+}
+.menubar__icon--note {
+  margin-bottom: 0.38rem;
+}
+@media screen and (min-width: 1280px) {
+  .menubar {
+    display: none;
+  }
+}
