@@ -43,7 +43,12 @@ export default function Join() {
 
   const handleIdCheck = async () => {
     try {
-      const response = await axios.post("", { id: id });
+      const response = await axios.post(
+        "https://ec2-13-209-41-40.ap-northeast-2.compute.amazonaws.com/users/checkDuplicate_id",
+        {
+          userId: id,
+        }
+      );
       if (response.status === 200) {
         setIdValid(true);
       } else {
@@ -59,11 +64,11 @@ export default function Join() {
 
     if (idValid && passwordValid && confirmPassword && name && email) {
       try {
-        const response = await axios.post("", {
-          id: id,
-          password: password,
-          name: name,
-          email: email,
+        const response = await axios.post("api/users/join", {
+          userId: id,
+          passwd: password,
+          userName: name,
+          userEmail: email,
         });
         if (response.status === 200) {
           navigate("/");
@@ -82,7 +87,7 @@ export default function Join() {
       <div className="join__container">
         <div className="join__wrapper">
           <span className="join__text">회원가입</span>
-          <form className="join__form" onSubmit={handleSubmit}>
+          <form className="join__form">
             <div className="join__form__container">
               <div className="join__form__text">
                 <label>아이디</label>
@@ -228,13 +233,17 @@ export default function Join() {
               </div>
               <span className="join__form__time">02:00</span>
             </div> */}
-            <button type="submit" className="join__btn--done">
+            <button
+              type="submit"
+              className="join__btn--done"
+              onClick={handleSubmit}
+            >
               가입하기
             </button>
           </form>
         </div>
       </div>
-      <MenuBar />
+      <MenuBar icon="" />
     </div>
   );
 }
