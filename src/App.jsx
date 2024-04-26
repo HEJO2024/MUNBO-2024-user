@@ -14,6 +14,7 @@ import Note from "./pages/Note/Note";
 import NoteUpdate from "./pages/Note/NoteUpdate";
 import Quiz from "./pages/Quiz/Quiz";
 import Select from "./pages/Quiz/Select";
+import Settings from "./pages/Note/Quiz/Settings";
 import Summary from "./pages/Note/Summary";
 import Test from "./pages/Quiz/Test";
 import Update from "./pages/MyPage/Update";
@@ -40,6 +41,7 @@ function App() {
           <Route path="/note/create" element={<Create />} />
           <Route path="/note/update" element={<NoteUpdate />} />
           <Route path="/note/summary" element={<Summary />} />
+          <Route path="/note/quiz/settings" element={<Settings />} />
         </Routes>
       </Router>
     </div>

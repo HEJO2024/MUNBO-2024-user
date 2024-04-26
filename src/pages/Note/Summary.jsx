@@ -22,7 +22,7 @@ export default function Summary() {
             <button
               className="summary__btn--quiz"
               onClick={() => {
-                navigate("");
+                navigate("/note/quiz/settings");
               }}
             >
               문제 생성

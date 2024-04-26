@@ -43,9 +43,12 @@ export default function Join() {
 
   const handleIdCheck = async () => {
     try {
-      const response = await axios.post("/api/users/checkDuplicate_id", {
-        userId: id,
-      });
+      const response = await axios.post(
+        "http://52.78.80.253:3000/users/checkDuplicate_id",
+        {
+          userId: id,
+        }
+      );
       if (response.status === 200) {
         setIdValid(true);
       } else {
@@ -61,12 +64,15 @@ export default function Join() {
 
     if (idValid && passwordValid && confirmPassword && name && email) {
       try {
-        const response = await axios.post("api/users/join", {
-          userId: id,
-          passwd: password,
-          userName: name,
-          userEmail: email,
-        });
+        const response = await axios.post(
+          "http://52.78.80.253:3000/users/join",
+          {
+            userId: id,
+            passwd: password,
+            userName: name,
+            userEmail: email,
+          }
+        );
         if (response.status === 200) {
           navigate("/");
         }

@@ -23,7 +23,7 @@ export default function Login() {
       setPassword(value);
     }
   };
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
     if (!id) {
@@ -35,18 +35,24 @@ export default function Login() {
       return;
     }
 
-    try {
-      const response = await axios.post("/api/users/login", {
+    axios
+      .post("http://52.78.80.253:3000/users/login", {
         userId: id,
         passwd: password,
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        if (error.response && error.response.status === 401) {
+          alert("아이디 혹은 비밀번호가 일치하지 않습니다.");
+        } else {
+          console.error(error);
+        }
       });
-
-      if (response.status === 200) {
-        navigate("/");
-      }
-    } catch (error) {
-      console.error(error);
-    }
   };
   const confirmAlert1 = () => {
     setShowAlert1(false);
@@ -91,7 +97,7 @@ export default function Login() {
           </form>
         </div>
       </div>
-      <MenuBar />
+      <MenuBar icon="" />
       {showAlert1 && (
         <Alert
           message="아이디를 입력해주세요."

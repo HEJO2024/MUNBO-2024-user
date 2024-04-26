@@ -63,7 +63,7 @@
   cursor: pointer;
 }
 .summary__btn .summary__btn--save {
-  width: 15%;
+  width: 20%;
   max-width: 100px;
   background-color: rgba(43, 87, 185, 1);
 }
