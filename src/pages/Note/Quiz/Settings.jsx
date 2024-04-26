@@ -8,29 +8,32 @@ import { useState } from "react";
 
 export default function Settings() {
   const navigate = useNavigate();
-  const [quizNum, setSelected] = useState("선택");
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleOptionClick = (option) => {
-    setSelected(option);
-    setIsOpen(false);
-  };
 
   return (
     <div className="settings">
       <Header />
       <div className="settings__container">
         <div className="settings__wrapper">
-          <p className="select__text">문제 수</p>
-          <button className="select__label" onClick={() => setIsOpen(!isOpen)}>
-            {quizNum}
-          </button>
-          {isOpen && <Dropdown handleOptionClick={handleOptionClick} />}
+          <Dropdown
+            message="문제 수"
+            options={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
+            defaultOption="문제 수를 선택해주세요."
+          />
+          <Dropdown
+            message="문제 유형"
+            options={["객관식(4지선다)", "주관식", "OX 퀴즈"]}
+            defaultOption="문제 유형을 선택해주세요."
+          />
+          <Dropdown
+            message="언어"
+            options={["한국어", "영어"]}
+            defaultOption="언어를 선택해주세요."
+          />
           <button
-            className="select__btn"
-            onClick={() => navigate("/quiz/test")}
+            className="settings__btn"
+            onClick={() => navigate("/note/quiz")}
           >
-            선택 완료
+            문제 생성
           </button>
         </div>
       </div>
