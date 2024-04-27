@@ -57,6 +57,19 @@ export default function MenuBar({ icon }) {
     if (icon === "note") {
       navigate("/note");
     }
+    // if (sessionStorage.getItem("token")) {
+    //   if (icon === "quiz") {
+    //     navigate("/quiz");
+    //   }
+    //   if (icon === "home") {
+    //     navigate("/");
+    //   }
+    //   if (icon === "note") {
+    //     navigate("/note");
+    //   }
+    // } else {
+    //   navigate("/login");
+    // }
   };
 
   return (

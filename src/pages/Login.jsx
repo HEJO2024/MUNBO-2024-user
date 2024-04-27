@@ -11,9 +11,12 @@ export default function Login() {
   const navigate = useNavigate();
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
-  const [showAlert1, setShowAlert1] = useState(false);
-  const [showAlert2, setShowAlert2] = useState(false);
-  const [showAlert3, setShowAlert3] = useState(false);
+  const [showAlert, setShowAlert] = useState({
+    message: "",
+    type: "",
+    okHandler: null,
+    cancelHandler: null,
+  });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -27,16 +30,24 @@ export default function Login() {
     event.preventDefault();
 
     if (!id) {
-      setShowAlert1(true);
+      setShowAlert({
+        message: "아이디를 입력해주세요.",
+        type: "ok",
+        okHandler: () => setShowAlert({ message: "" }),
+      });
       return;
     }
     if (!password) {
-      setShowAlert2(true);
+      setShowAlert({
+        message: "비밀번호를 입력해주세요.",
+        type: "ok",
+        okHandler: () => setShowAlert({ message: "" }),
+      });
       return;
     }
 
     axios
-      .post("http://52.78.80.253:3000/users/login", {
+      .post("https://munbo2024.site/users/login", {
         userId: id,
         passwd: password,
       })
@@ -48,18 +59,16 @@ export default function Login() {
       })
       .catch((error) => {
         if (error.response && error.response.status === 401) {
-          alert("아이디 혹은 비밀번호가 일치하지 않습니다.");
+          setShowAlert({
+            message: "아이디 혹은 비밀번호가 일치하지 않습니다.",
+            type: "ok",
+            okHandler: () =>
+              setShowAlert({ message: "", type: "", okHandler: null }),
+          });
         } else {
           console.error(error);
         }
       });
-  };
-  const confirmAlert1 = () => {
-    setShowAlert1(false);
-  };
-
-  const confirmAlert2 = () => {
-    setShowAlert2(false);
   };
 
   return (
@@ -98,18 +107,12 @@ export default function Login() {
         </div>
       </div>
       <MenuBar icon="" />
-      {showAlert1 && (
+      {showAlert.message && (
         <Alert
-          message="아이디를 입력해주세요."
-          type="ok"
-          okHandler={confirmAlert1}
-        />
-      )}
-      {showAlert2 && (
-        <Alert
-          message="비밀번호를 입력해주세요."
-          type="ok"
-          okHandler={confirmAlert2}
+          message={showAlert.message}
+          type={showAlert.type}
+          okHandler={showAlert.okHandler}
+          cancelHandler={showAlert.cancelHandler}
         />
       )}
     </div>

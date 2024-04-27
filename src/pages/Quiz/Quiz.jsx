@@ -14,19 +14,25 @@ export default function Quiz() {
         <div className="quiz__wrapper">
           <button
             className="quiz__btn--aiquiz"
-            onClick={() => navigate("/quiz/select")}
+            onClick={() =>
+              navigate("/quiz/select", { state: { quizType: "ai" } })
+            }
           >
             AI 생성 문제 풀기
           </button>
           <button
             className="quiz__btn--save"
-            onClick={() => navigate("/quiz/select")}
+            onClick={() =>
+              navigate("/quiz/select", { state: { quizType: "save" } })
+            }
           >
             저장한 문제
           </button>
           <button
             className="quiz__btn--test"
-            onClick={() => navigate("/quiz/select")}
+            onClick={() =>
+              navigate("/quiz/select", { state: { quizType: "test" } })
+            }
           >
             진단평가 받기
           </button>

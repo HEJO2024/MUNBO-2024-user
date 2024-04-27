@@ -1,14 +1,17 @@
 .settings {
   width: 100%;
   height: 100%;
-  position: relative;
+  overflow-y: scroll;
+}
+.settings::-webkit-scrollbar {
+  display: none;
 }
 .settings__container {
   width: 100%;
   height: auto;
-  position: absolute;
-  top: 60px;
-  bottom: 85px;
+  margin-top: 60px;
+  margin-bottom: 85px;
+  padding-top: 3.5rem;
 }
 .settings__wrapper {
   width: 100%;
@@ -17,6 +20,33 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.settings__etc {
+  width: 78%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.settings__etc p {
+  font-size: 1.35rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+.settings__etc textarea {
+  width: 100%;
+  min-height: 200px;
+  border-radius: 0.625rem;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  background: #fff;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset;
+  padding: 15px;
+  font-size: 1.05rem;
+  line-height: 1.5rem;
+  margin-bottom: 1.8rem;
+}
+.settings__etc textarea::placeholder {
+  color: rgba(0, 0, 0, 0.5);
 }
 .settings__btn {
   color: #fff;
@@ -31,4 +61,5 @@
   height: 48px;
   cursor: pointer;
   margin-top: 1.2rem;
+  margin-bottom: 3rem;
 }

@@ -2,6 +2,7 @@ import "../../styles/pages/MyPage/Update.css";
 
 import { useEffect, useState } from "react";
 
+import Alert from "../../components/Alert";
 import Header from "../../components/Header";
 import MenuBar from "../../components/MenuBar";
 import axios from "axios";
@@ -17,6 +18,12 @@ export default function Update() {
   const [password, setPassword] = useState("");
   const [passwordValid, setPasswordValid] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
+  const [showAlert, setShowAlert] = useState({
+    message: "",
+    type: "",
+    okHandler: null,
+    cancelHandler: null,
+  });
 
   useEffect(() => {
     fetchUserInfo();
@@ -31,6 +38,7 @@ export default function Update() {
         email: response.data.email,
       });
     } catch (error) {
+      // 오류 발생 처리
       console.error(error);
     }
   };
@@ -54,22 +62,58 @@ export default function Update() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (passwordValid && confirmPassword && userInfo.name && userInfo.email) {
-      try {
-        const response = await axios.post("", {
-          password: password,
-          name: userInfo.name,
-          email: userInfo.email,
+    if (!password) {
+      if (userInfo.name && userInfo.email) {
+        axios
+          .post("", { name: userInfo.name, email: userInfo.email })
+          .then((response) => {
+            console.log(response);
+            if (response.status === 200) {
+              setShowAlert({
+                message: "수정되었습니다!",
+                type: "ok",
+                okHandler: () => navigate("/mypage"),
+              });
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } else {
+        setShowAlert({
+          message: "모든 항목에 올바르게 기입해주세요.",
+          type: "ok",
+          okHandler: () => setShowAlert({ message: "" }),
         });
-
-        if (response.status === 200) {
-          navigate("/");
-        }
-      } catch (error) {
-        console.error(error);
       }
     } else {
-      alert("모든 항목을 올바르게 입력해주세요.");
+      if (passwordValid && confirmPassword && userInfo.name && userInfo.email) {
+        axios
+          .post("", {
+            password: password,
+            name: userInfo.name,
+            email: userInfo.email,
+          })
+          .then((response) => {
+            console.log(response);
+            if (response.status === 200) {
+              setShowAlert({
+                message: "수정되었습니다!",
+                type: "ok",
+                okHandler: () => navigate("/mypage"),
+              });
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } else {
+        setShowAlert({
+          message: "모든 항목에 올바르게 기입해주세요.",
+          type: "ok",
+          okHandler: () => setShowAlert({ message: "" }),
+        });
+      }
     }
   };
 
@@ -175,6 +219,13 @@ export default function Update() {
         </div>
       </div>
       <MenuBar />
+      {showAlert.message && (
+        <Alert
+          message={showAlert.message}
+          type={showAlert.type}
+          okHandler={showAlert.okHandler}
+        />
+      )}
     </div>
   );
 }

@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 export default function Header() {
   const navigate = useNavigate();
   const [tabOpen, setTabOpen] = useState(false);
-  const [token, setToken] = useState(sessionStorage.getItem("token"));
+  const [token, setToken] = useState("");
 
   useEffect(() => {
     setToken(sessionStorage.getItem("token"));

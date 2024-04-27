@@ -3,13 +3,19 @@ import "../styles/components/Dropdown.css";
 import PropTypes from "prop-types";
 import { useState } from "react";
 
-export default function Dropdown({ message, options, defaultOption }) {
+export default function Dropdown({
+  message,
+  options,
+  defaultOption,
+  onSelect,
+}) {
   const [selected, setSelected] = useState(defaultOption);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOptionClick = (option) => {
     setSelected(option);
     setIsOpen(false);
+    onSelect(option);
   };
 
   return (
@@ -26,7 +32,7 @@ export default function Dropdown({ message, options, defaultOption }) {
         className="dropdown__label"
         onClick={() => setIsOpen(!isOpen)}
         style={{
-          color: selected === defaultOption ? "rgba(0, 0, 0, 0.50)" : "",
+          color: selected === defaultOption ? "rgba(0, 0, 0, 0.50)" : "#000",
         }}
       >
         {selected}
@@ -52,4 +58,5 @@ Dropdown.propTypes = {
   message: PropTypes.string.isRequired,
   options: PropTypes.array.isRequired,
   defaultOption: PropTypes.string.isRequired,
+  onSelect: PropTypes.func.isRequired,
 };

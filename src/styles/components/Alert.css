@@ -4,7 +4,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 25;
+  z-index: 100;
 }
 .alert__wrapper {
   width: 100%;
@@ -36,10 +36,17 @@
   margin-bottom: 40px;
   line-height: 2rem;
 }
+.alert__btn-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
 .alert__btn {
   font-size: 1.5rem;
   font-weight: 600;
-  width: 7.5rem;
+  width: 50%;
+  max-width: 160px;
   height: 2.75625rem;
   cursor: pointer;
 }

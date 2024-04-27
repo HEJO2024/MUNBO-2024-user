@@ -1,5 +1,6 @@
 import "../styles/pages/Join.css";
 
+import Alert from "../components/Alert";
 import Header from "../components/Header";
 import MenuBar from "../components/MenuBar";
 import axios from "axios";
@@ -15,6 +16,12 @@ export default function Join() {
   const [idValid, setIdValid] = useState(null);
   const [passwordValid, setPasswordValid] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
+  const [showAlert, setShowAlert] = useState({
+    message: "",
+    type: "",
+    okHandler: null,
+    cancelHandler: null,
+  });
 
   const idChange = (event) => {
     setId(event.target.value);
@@ -62,7 +69,15 @@ export default function Join() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (idValid && passwordValid && confirmPassword && name && email) {
+    if (
+      idValid &&
+      passwordValid &&
+      confirmPassword &&
+      id &&
+      password &&
+      name &&
+      email
+    ) {
       try {
         const response = await axios.post(
           "http://52.78.80.253:3000/users/join",
@@ -74,13 +89,24 @@ export default function Join() {
           }
         );
         if (response.status === 200) {
+          setShowAlert({
+            message: "가입을 축하드립니다!",
+            type: "ok",
+            okHandler: () => navigate("/"),
+          });
           navigate("/");
         }
       } catch (error) {
+        // 이메일 검사
+        // 기타 오류 처리
         console.error(error);
       }
     } else {
-      alert("모든 항목을 올바르게 입력해주세요.");
+      setShowAlert({
+        message: "모든 항목에 올바르게 기입해주세요.",
+        type: "ok",
+        okHandler: () => setShowAlert({ message: "" }),
+      });
     }
   };
 
@@ -247,6 +273,13 @@ export default function Join() {
         </div>
       </div>
       <MenuBar icon="" />
+      {showAlert.message && (
+        <Alert
+          message={showAlert.message}
+          type={showAlert.type}
+          okHandler={showAlert.okHandler}
+        />
+      )}
     </div>
   );
 }
