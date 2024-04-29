@@ -1,11 +1,63 @@
 import "../../styles/pages/Note/Detail.css";
 
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
+import Alert from "../../components/Alert";
 import Header from "../../components/Header";
 import MenuBar from "../../components/MenuBar";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function Detail() {
   const navigate = useNavigate();
+  const noteId = useParams();
+  const [noteData, setNoteData] = useState([]);
+  const [showAlert, setShowAlert] = useState({
+    message: "",
+    type: "",
+    okHandler: null,
+    cancelHandler: null,
+  });
+
+  useEffect(() => {
+    fetchNoteDetail();
+  });
+
+  const fetchNoteDetail = () => {
+    axios
+      .post("", { noteId: noteId })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          setNoteData(response.data.summaryData);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleDeleteBtn = () => {
+    setShowAlert({
+      message: "삭제하시겠습니까?",
+      type: "",
+      okHandler: () => deleteNote,
+      cancelHandler: () => setShowAlert({ message: "" }),
+    });
+  };
+
+  const deleteNote = () => {
+    axios.post("", { noteId: noteId }).then((response) => {
+      console.log(response);
+      if (response.status === 200) {
+        setShowAlert({
+          message: "삭제되었습니다!",
+          type: "ok",
+          okHandler: () => navigate("/note"),
+        });
+      }
+    });
+  };
 
   return (
     <div className="detail">
@@ -29,12 +81,16 @@ export default function Detail() {
               </button>
               <button
                 onClick={() => {
-                  navigate("/note/update");
+                  navigate("/note/update", {
+                    state: { noteData: noteData },
+                  });
                 }}
               >
                 수정
               </button>
-              <button className="detail__btn--delete">삭제</button>
+              <button className="detail__btn--delete" onClick={handleDeleteBtn}>
+                삭제
+              </button>
             </div>
             <div className="detail__btn-container2">
               <button className="detail__btn--save">저장된 문제</button>
@@ -43,6 +99,14 @@ export default function Detail() {
         </div>
       </div>
       <MenuBar icon="note" />
+      {showAlert.message && (
+        <Alert
+          message={showAlert.message}
+          type={showAlert.type}
+          okHandler={showAlert.okHandler}
+          cancelHandler={showAlert.cancelHandler}
+        />
+      )}
     </div>
   );
 }

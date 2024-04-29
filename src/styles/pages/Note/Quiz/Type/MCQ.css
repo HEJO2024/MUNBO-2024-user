@@ -1,0 +1,52 @@
+.MCQ {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+}
+.MCQ::-webkit-scrollbar {
+  display: none;
+}
+.MCQ-hidden-scroll {
+  overflow: hidden;
+}
+.MCQ__container {
+  width: 100%;
+  height: auto;
+  margin-top: 60px;
+  margin-bottom: 85px;
+  padding-top: 3rem;
+}
+.MCQ__wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.MCQ__icon {
+  width: 85%;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-bottom: 2.5rem;
+}
+.MCQ__question {
+  width: 85%;
+  font-size: 1.25rem;
+  line-height: 1.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+.MCQ__choice {
+  width: 85%;
+  font-size: 1.25rem;
+  line-height: 1.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3rem;
+}

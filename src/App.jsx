@@ -9,10 +9,12 @@ import GoTest from "./pages/Quiz/GoTest";
 import Home from "./pages/Home";
 import Join from "./pages/Join";
 import Login from "./pages/Login";
+import MCQ from "./pages/Note/Quiz/Type/MCQ";
 import MyPage from "./pages/MyPage/MyPage";
 import Note from "./pages/Note/Note";
 import NoteUpdate from "./pages/Note/NoteUpdate";
 import Quiz from "./pages/Quiz/Quiz";
+import Score from "./pages/Quiz/Score";
 import Select from "./pages/Quiz/Select";
 import Settings from "./pages/Note/Quiz/Settings";
 import Summary from "./pages/Note/Summary";
@@ -35,13 +37,15 @@ function App() {
           <Route path="/quiz/select" element={<Select />} />
           <Route path="/quiz/go-test" element={<GoTest />} />
           <Route path="/quiz/test" element={<Test />} />
+          <Route path="/quiz/score" element={<Score />} />
 
           <Route path="/note" element={<Note />} />
-          <Route path="/note/detail" element={<Detail />} />
+          <Route path="/note/detail/:noteId" element={<Detail />} />
           <Route path="/note/create" element={<Create />} />
           <Route path="/note/update" element={<NoteUpdate />} />
           <Route path="/note/summary" element={<Summary />} />
           <Route path="/note/quiz/settings" element={<Settings />} />
+          <Route path="/note/quiz/MCQ" element={<MCQ />} />
         </Routes>
       </Router>
     </div>

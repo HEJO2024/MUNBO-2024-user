@@ -4,10 +4,29 @@ import AttachIcon from "../../assets/icon/icon_attach.svg";
 import CameraIcon from "../../assets/icon/icon_camera.svg";
 import Header from "../../components/Header";
 import MenuBar from "../../components/MenuBar";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function Create() {
   const navigate = useNavigate();
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
+  const handleSummary = () => {
+    axios.post("", { text: content }).then((response) => {
+      console.log(response);
+      if (response.status === 200) {
+        navigate("note/summary", {
+          state: {
+            title: title,
+            summaryId: response.data.summaryId,
+            summaryContent: response.data.summaryText,
+          },
+        });
+      }
+    });
+  };
 
   return (
     <div className="create">
@@ -15,10 +34,19 @@ export default function Create() {
       <div className="create__container">
         <div className="create__wrapper">
           <p className="create__title">제목</p>
-          <input type="text" placeholder="제목을 입력해주세요."></input>
+          <input
+            type="text"
+            placeholder="제목을 입력해주세요."
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          ></input>
           <p className="create__data">자료</p>
           <div className="create__data-container">
-            <textarea placeholder="공부한 자료를 입력해주세요."></textarea>
+            <textarea
+              placeholder="공부한 자료를 입력해주세요."
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            ></textarea>
             <div className="create__icon">
               <img
                 src={CameraIcon}

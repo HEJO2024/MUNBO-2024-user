@@ -1,13 +1,41 @@
 import "../../styles/pages/Note/Note.css";
 
+import { useEffect, useState } from "react";
+
 import CreateIcon from "../../assets/icon/icon_create-note.svg";
 import Header from "../../components/Header";
 import MenuBar from "../../components/MenuBar";
+import axios from "axios";
 import noteTest from "../../data/noteTest";
 import { useNavigate } from "react-router-dom";
 
 export default function Note() {
   const navigate = useNavigate();
+  const [noteList, setNoteList] = useState([]);
+
+  useEffect(() => {
+    fetchNoteList();
+  }, []);
+
+  const fetchNoteList = () => {
+    const token = sessionStorage.getItem("token");
+    axios
+      .get("", {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          setNoteList(response.data.summaryList);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div className="note">
       <Header />
@@ -27,15 +55,17 @@ export default function Note() {
               <tr>
                 <th>제목</th>
                 <th>작성일</th>
-                <th>문제</th>
+                {/* <th>문제</th> */}
               </tr>
             </thead>
             <tbody>
               {noteTest.map((item, index) => (
-                <tr key={index}>
-                  <td onClick={() => navigate("/note/detail")}>{item.title}</td>
-                  <td>{item.date}</td>
-                  <td>{item.quiz}</td>
+                <tr key={item.noteId}>
+                  <td onClick={() => navigate(`/note/detail/${item.noteId}`)}>
+                    {item.summaryTitle}
+                  </td>
+                  <td>{item.summaryDate}</td>
+                  {/* <td>{item.quiz}</td> */}
                 </tr>
               ))}
             </tbody>

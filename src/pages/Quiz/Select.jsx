@@ -20,6 +20,7 @@ export default function Select() {
     okHandler: null,
     cancelHandler: null,
   });
+  const [quiz, setQuiz] = useState();
 
   const handleBtn = () => {
     if (!certificate) {
@@ -29,21 +30,67 @@ export default function Select() {
         okHandler: () => setShowAlert({ message: "" }),
       });
     } else {
+      navigate("/quiz/go-test");
       const token = sessionStorage.getItem("token");
-      axios
-        .post(
-          "",
-          { quizType: quizType, certificate: certificate },
-          {
-            headers: {
-              authorization: `Bearer ${token}`,
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => console.log(error));
+      if (quizType === "ai") {
+        axios
+          .post(
+            "",
+            { certificate: certificate },
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            // 진단평가 안한 경우에는 quiz/test로 이동하도록, quiz/go-test로 자격증 정보 전달
+            if (response.status === 200) {
+              setQuiz(response.data.quiz);
+              navigate("/quiz/ai", { state: { quiz: quiz } });
+            }
+          })
+          .catch((error) => console.log(error));
+      } else if (quizType === "save") {
+        axios
+          .post(
+            "",
+            { certificate: certificate },
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            if (response.status === 200) {
+              setQuiz(response.data.quiz);
+              navigate("/quiz/save", { state: { quiz: quiz } });
+            }
+          })
+          .catch((error) => console.log(error));
+      } else if (quizType === "test") {
+        axios
+          .post(
+            "",
+            { quizType: quizType, certificate: certificate },
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+            }
+          )
+          .then((response) => {
+            console.log(response);
+            if (response.status === 200) {
+              setQuiz(response.data.quiz);
+              navigate("/quiz/test", { state: { quiz: quiz } });
+            }
+          })
+          .catch((error) => console.log(error));
+      }
     }
   };
 

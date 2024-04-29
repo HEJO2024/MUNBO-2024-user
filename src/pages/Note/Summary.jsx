@@ -1,11 +1,43 @@
 import "../../styles/pages/Note/Summary.css";
 
+import { useLocation, useNavigate } from "react-router-dom";
+
+import Alert from "../../components/Alert";
 import Header from "../../components/Header";
 import MenuBar from "../../components/MenuBar";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
 
 export default function Summary() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [showAlert, setShowAlert] = useState({
+    message: "",
+    type: "",
+    okHandler: null,
+    cancelHandler: null,
+  });
+
+  const handleSave = () => {
+    axios
+      .post("", {
+        summaryId: location.state.summaryId,
+        summaryTitle: location.state.summaryTitle,
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          setShowAlert({
+            message: "저장되었습니다!",
+            type: "ok",
+            okHandler: () => setShowAlert({ message: "" }),
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="summary">
@@ -18,11 +50,15 @@ export default function Summary() {
             함께 묶어놓은 추상화된 틀
           </div>
           <div className="summary__btn">
-            <button className="summary__btn--save">저장</button>
+            <button className="summary__btn--save" onClick={handleSave}>
+              저장
+            </button>
             <button
               className="summary__btn--quiz"
               onClick={() => {
-                navigate("/note/quiz/settings");
+                navigate("/note/quiz/settings", {
+                  // state: { summaryId: location.state.summaryId },
+                });
               }}
             >
               문제 생성
@@ -31,6 +67,14 @@ export default function Summary() {
         </div>
       </div>
       <MenuBar icon="note" />
+      {showAlert.message && (
+        <Alert
+          message={showAlert.message}
+          type={showAlert.type}
+          okHandler={showAlert.okHandler}
+          cancelHandler={showAlert.cancelHandler}
+        />
+      )}
     </div>
   );
 }

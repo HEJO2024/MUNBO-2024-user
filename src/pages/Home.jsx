@@ -25,11 +25,12 @@ export default function Home() {
           <div className="home__btn-container">
             <button
               className="home__btn"
-              onClick={
-                sessionStorage.getItem("token")
-                  ? () => navigate("/quiz/select")
-                  : () => navigate("/login")
-              }
+              onClick={() => navigate("/quiz")}
+              // onClick={
+              //   sessionStorage.getItem("token")
+              //     ? () => navigate("/quiz/select")
+              //     : () => navigate("/login")
+              // }
             >
               <p className="home__btn__text  home__btn__text--quiz">
                 자격증 대비
@@ -42,11 +43,14 @@ export default function Home() {
             </button>
             <button
               className="home__btn"
-              onClick={
-                sessionStorage.getItem("token")
-                  ? () => navigate("/note")
-                  : () => navigate("/login")
-              }
+              onClick={() => {
+                navigate("/note");
+              }}
+              // onClick={
+              //   sessionStorage.getItem("token")
+              //     ? () => navigate("/note")
+              //     : () => navigate("/login")
+              // }
             >
               <p className="home__btn__text home__btn__text--note">
                 나만의

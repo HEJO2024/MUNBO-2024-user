@@ -1,14 +1,47 @@
 import "../../styles/pages/Note/NoteUpdate.css";
 
+import { useLocation, useNavigate } from "react-router-dom";
+
+import Alert from "../../components/Alert";
 import Header from "../../components/Header";
 import MenuBar from "../../components/MenuBar";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { useState } from "react";
 
 export default function NoteUpdate() {
   const navigate = useNavigate();
-  const [title, setTitle] = useState("클래스");
-  const [content, setContent] = useState("내용");
+  const location = useLocation();
+  const noteData = location.state.noteData;
+  const [title, setTitle] = useState(noteData.summaryTitle);
+  const [content, setContent] = useState(noteData.summaryContent);
+  const [showAlert, setShowAlert] = useState({
+    message: "",
+    type: "",
+    okHandler: null,
+    cancelHandler: null,
+  });
+
+  const handleUpdate = () => {
+    axios
+      .post("", {
+        summaryId: noteData.summaryId,
+        summaryTitle: title,
+        summaryText: content,
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          setShowAlert({
+            message: "수정되었습니다!",
+            type: "ok",
+            okHandler: () => navigate(`note/detail/${noteData.summaryId}`),
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <div className="note-update">
@@ -36,11 +69,19 @@ export default function NoteUpdate() {
             >
               이전
             </button>
-            <button>수정</button>
+            <button onClick={handleUpdate}>수정</button>
           </div>
         </div>
       </div>
       <MenuBar icon="note" />
+      {showAlert.message && (
+        <Alert
+          message={showAlert.message}
+          type={showAlert.type}
+          okHandler={showAlert.okHandler}
+          cancelHandler={showAlert.cancelHandler}
+        />
+      )}
     </div>
   );
 }

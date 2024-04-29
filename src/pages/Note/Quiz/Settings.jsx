@@ -1,42 +1,62 @@
 import "../../../styles/pages/Note/Quiz/Settings.css";
 
+import { useLocation, useNavigate } from "react-router-dom";
+
 import Alert from "../../../components/Alert";
 import Dropdown from "../../../components/Dropdown";
 import Header from "../../../components/Header";
 import MenuBar from "../../../components/MenuBar";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 export default function Settings() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [num, setNum] = useState(0);
   const [type, setType] = useState("");
   const [lang, setLang] = useState("");
   const [etc, setEtc] = useState("");
-  const [showAlert, setShowAlert] = useState(false);
+  const [showAlert, setShowAlert] = useState({
+    message: "",
+    type: "",
+    okHandler: null,
+    cancelHandler: null,
+  });
+  const [quiz, setQuiz] = useState();
 
   const handleEtcChange = (e) => {
     setEtc(e.target.value);
   };
   const handleSubmit = () => {
+    navigate("/note/quiz/MCQ");
     if (!num || !type || !lang || !etc) {
-      setShowAlert(true);
+      setShowAlert({
+        message: "모든 항목을 입력해주세요.",
+        type: "ok",
+        okHandler: () => setShowAlert({ message: "" }),
+      });
       return;
     }
-
+    // 요약노트 내용도 같이 보내기?
     axios
       .post("", {
-        num: num,
-        type: type,
-        lang: lang,
-        etc: etc,
+        summaryId: location.state.summaryId,
+        quizNum: num,
+        quizType: type,
+        summaryLanguage: lang,
+        userRequest: etc,
       })
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
-          // 문제 유형에 따라 다른 페이지로.
-          navigate("/note/quiz");
+          setQuiz(response.data.quiz);
+          if (type === "객관식(4지선다)") {
+            navigate("/note/quiz/MCQ", { state: { quiz: quiz } });
+          } else if (type == "주관식") {
+            navigate("/note/quiz/essay", { state: { quiz: quiz } });
+          } else if (type === "OX 퀴즈") {
+            navigate("/note/quiz/TF", { state: { quiz: quiz } });
+          }
         }
       })
       .catch((error) => {
@@ -80,6 +100,14 @@ export default function Settings() {
         </div>
       </div>
       <MenuBar icon="note" />
+      {showAlert.message && (
+        <Alert
+          message={showAlert.message}
+          type={showAlert.type}
+          okHandler={showAlert.okHandler}
+          cancelHandler={showAlert.cancelHandler}
+        />
+      )}
     </div>
   );
 }

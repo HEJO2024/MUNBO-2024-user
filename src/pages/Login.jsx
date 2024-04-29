@@ -54,6 +54,7 @@ export default function Login() {
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
+          sessionStorage.setItem("token", response.data.token);
           navigate("/");
         }
       })
