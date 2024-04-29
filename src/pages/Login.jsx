@@ -47,7 +47,7 @@ export default function Login() {
     }
 
     axios
-      .post("https://munbo2024.site/users/login", {
+      .post("/api/users/login", {
         userId: id,
         passwd: password,
       })
