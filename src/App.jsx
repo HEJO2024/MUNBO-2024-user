@@ -3,8 +3,10 @@ import "../src/styles/fonts/font.css";
 
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
+import AI from "./pages/Quiz/AI";
 import Create from "./pages/Note/Create";
 import Detail from "./pages/Note/Detail";
+import Essay from "./pages/Note/Quiz/Type/Essay";
 import GoTest from "./pages/Quiz/GoTest";
 import Home from "./pages/Home";
 import Join from "./pages/Join";
@@ -18,6 +20,7 @@ import Score from "./pages/Quiz/Score";
 import Select from "./pages/Quiz/Select";
 import Settings from "./pages/Note/Quiz/Settings";
 import Summary from "./pages/Note/Summary";
+import TF from "./pages/Note/Quiz/Type/TF";
 import Test from "./pages/Quiz/Test";
 import Update from "./pages/MyPage/Update";
 
@@ -37,6 +40,7 @@ function App() {
           <Route path="/quiz/select" element={<Select />} />
           <Route path="/quiz/go-test" element={<GoTest />} />
           <Route path="/quiz/test" element={<Test />} />
+          <Route path="/quiz/ai" element={<AI />} />
           <Route path="/quiz/score" element={<Score />} />
 
           <Route path="/note" element={<Note />} />
@@ -46,6 +50,8 @@ function App() {
           <Route path="/note/summary" element={<Summary />} />
           <Route path="/note/quiz/settings" element={<Settings />} />
           <Route path="/note/quiz/MCQ" element={<MCQ />} />
+          <Route path="/note/quiz/Essay" element={<Essay />} />
+          <Route path="/note/quiz/TF" element={<TF />} />
         </Routes>
       </Router>
     </div>

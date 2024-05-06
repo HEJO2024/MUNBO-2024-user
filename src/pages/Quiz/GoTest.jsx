@@ -1,35 +1,25 @@
 import "../../styles/pages/Quiz/GoTest.css";
 
-import { useLocation, useNavigate } from "react-router-dom";
-
 import Header from "../../components/Header";
 import MenuBar from "../../components/MenuBar";
 import axios from "axios";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function GoTest() {
   const navigate = useNavigate();
-  const location = useLocation;
-  const [quiz, setQuiz] = useState(null);
 
   const handleBtn = () => {
-    navigate("/quiz/test");
-    const token = sessionStorage.getItem("token");
     axios
-      .post(
-        "",
-        { certificate: location.state.certificate },
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      .get("/api/quiz/test_solve")
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
-          setQuiz(response.data.quiz);
-          navigate("/quiz/test", { state: { quiz: quiz } });
+          navigate("/quiz/test", {
+            state: {
+              quiz: response.data.quizData,
+              last: response.data.lastQuiz,
+            },
+          });
         }
       })
       .catch((error) => console.log(error));

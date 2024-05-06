@@ -1,0 +1,67 @@
+.Essay {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+}
+.Essay::-webkit-scrollbar {
+  display: none;
+}
+.Essay-hidden-scroll {
+  overflow: hidden;
+}
+.Essay__container {
+  width: 100%;
+  height: auto;
+  margin-top: 60px;
+  margin-bottom: 85px;
+  padding-top: 3rem;
+}
+.Essay__wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.Essay__icon {
+  width: 85%;
+  max-width: 800px;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-bottom: 2.5rem;
+}
+.Essay__question {
+  width: 85%;
+  font-size: 1.25rem;
+  line-height: 1.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+.Essay textarea {
+  width: 85%;
+  max-width: 800px;
+  min-height: 360px;
+  border-radius: 0.625rem;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  background: #fff;
+  padding: 20px;
+  font-size: 1.05rem;
+  line-height: 1.5rem;
+  margin-bottom: 3rem;
+}
+.Essay textarea::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 0.9375rem;
+}
+.Essay__answer {
+  width: 90%;
+  max-width: 800px;
+  padding: 20px;
+  font-size: 1.05rem;
+  line-height: 1.5rem;
+  margin-bottom: 3rem;
+}

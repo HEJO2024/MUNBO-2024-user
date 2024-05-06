@@ -38,8 +38,8 @@ export default function MenuTab({ setTabOpen, token, setToken }) {
       message: "로그아웃하시겠습니까?",
       type: "",
       okHandler: () => {
-        sessionStorage.removeItem("token");
         navigate("/");
+        sessionStorage.removeItem("token");
       },
       cancelHandler: () => setShowAlert({ message: "" }),
     });
@@ -60,12 +60,11 @@ export default function MenuTab({ setTabOpen, token, setToken }) {
           <div className="menutab__middle">
             <div
               className="menutab__menu-container"
-              onClick={() => navigate("/mypage")}
-              // onClick={
-              //   sessionStorage.getItem("token")
-              //     ? () => navigate("/mypage")
-              //     : () => navigate("/login")
-              // }
+              onClick={
+                sessionStorage.getItem("token")
+                  ? () => navigate("/mypage")
+                  : () => navigate("/login")
+              }
             >
               <img
                 src={MypageIcon}

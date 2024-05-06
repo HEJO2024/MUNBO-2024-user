@@ -13,7 +13,7 @@ export default function NoteUpdate() {
   const location = useLocation();
   const noteData = location.state.noteData;
   const [title, setTitle] = useState(noteData.summaryTitle);
-  const [content, setContent] = useState(noteData.summaryContent);
+  const [content, setContent] = useState(noteData.summaryText);
   const [showAlert, setShowAlert] = useState({
     message: "",
     type: "",
@@ -23,9 +23,8 @@ export default function NoteUpdate() {
 
   const handleUpdate = () => {
     axios
-      .post("", {
+      .put("/api/summaryNote/note/update", {
         summaryId: noteData.summaryId,
-        summaryTitle: title,
         summaryText: content,
       })
       .then((response) => {
@@ -34,7 +33,7 @@ export default function NoteUpdate() {
           setShowAlert({
             message: "수정되었습니다!",
             type: "ok",
-            okHandler: () => navigate(`note/detail/${noteData.summaryId}`),
+            okHandler: () => navigate("/note"),
           });
         }
       })

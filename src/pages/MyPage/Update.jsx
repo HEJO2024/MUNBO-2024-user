@@ -12,11 +12,11 @@ export default function Update() {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({
     id: "",
+    passwd: "",
     name: "",
     email: "",
   });
-  const [password, setPassword] = useState("");
-  const [passwordValid, setPasswordValid] = useState(null);
+  const [passwordValid, setPasswordValid] = useState(true);
   const [confirmPassword, setConfirmPassword] = useState(null);
   const [showAlert, setShowAlert] = useState({
     message: "",
@@ -24,96 +24,84 @@ export default function Update() {
     okHandler: null,
     cancelHandler: null,
   });
+  const token = sessionStorage.getItem("token");
 
   useEffect(() => {
     fetchUserInfo();
   }, []);
 
-  const fetchUserInfo = async () => {
-    try {
-      const response = await axios.get("");
-      setUserInfo({
-        id: response.data.id,
-        name: response.data.name,
-        email: response.data.email,
+  const fetchUserInfo = () => {
+    axios
+      .get("/api/users/update", {
+        headers: { authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          setUserInfo({
+            id: response.data.userInfo.userId,
+            passwd: response.data.userInfo.passwd,
+            name: response.data.userInfo.userName,
+            email: response.data.userInfo.userEmail,
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
       });
-    } catch (error) {
-      // 오류 발생 처리
-      console.error(error);
-    }
   };
 
   const passwordChange = (event) => {
     const newPassword = event.target.value;
-    setPassword(newPassword);
+    setUserInfo({ passwd: newPassword });
     setPasswordValid(validatePassword(newPassword));
   };
 
   const password2Change = (event) => {
-    const confirmPassword = event.target.value === password;
+    const confirmPassword = event.target.value === userInfo.passwd;
     setConfirmPassword(confirmPassword);
   };
 
-  const validatePassword = (password) => {
+  const validatePassword = (passwd) => {
     const regex = /^(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    return regex.test(password);
+    return regex.test(passwd);
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
-    if (!password) {
-      if (userInfo.name && userInfo.email) {
-        axios
-          .post("", { name: userInfo.name, email: userInfo.email })
-          .then((response) => {
-            console.log(response);
-            if (response.status === 200) {
-              setShowAlert({
-                message: "수정되었습니다!",
-                type: "ok",
-                okHandler: () => navigate("/mypage"),
-              });
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      } else {
-        setShowAlert({
-          message: "모든 항목에 올바르게 기입해주세요.",
-          type: "ok",
-          okHandler: () => setShowAlert({ message: "" }),
+    if (userInfo.passwd && userInfo.name && passwordValid && confirmPassword) {
+      axios
+        .put(
+          "/api/users/update",
+          {
+            passwd: userInfo.passwd,
+            userName: userInfo.name,
+          },
+          {
+            headers: { authorization: `Bearer ${token}` },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            sessionStorage.setItem("userName", userInfo.name);
+            setShowAlert({
+              message: "수정되었습니다!",
+              type: "ok",
+              okHandler: () => navigate("/mypage"),
+            });
+          }
+        })
+        .catch((error) => {
+          console.error(error);
         });
-      }
     } else {
-      if (passwordValid && confirmPassword && userInfo.name && userInfo.email) {
-        axios
-          .post("", {
-            password: password,
-            name: userInfo.name,
-            email: userInfo.email,
-          })
-          .then((response) => {
-            console.log(response);
-            if (response.status === 200) {
-              setShowAlert({
-                message: "수정되었습니다!",
-                type: "ok",
-                okHandler: () => navigate("/mypage"),
-              });
-            }
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      } else {
-        setShowAlert({
-          message: "모든 항목에 올바르게 기입해주세요.",
-          type: "ok",
-          okHandler: () => setShowAlert({ message: "" }),
-        });
-      }
+      setShowAlert({
+        message: "모든 항목에 올바르게 기입해주세요.",
+        type: "ok",
+        okHandler: () => setShowAlert({ message: "" }),
+      });
     }
   };
 
@@ -156,7 +144,7 @@ export default function Update() {
               <input
                 type="password"
                 name="password"
-                value={password}
+                value={userInfo.passwd}
                 onChange={passwordChange}
               ></input>
             </div>
@@ -206,13 +194,15 @@ export default function Update() {
                   type="email"
                   name="email"
                   value={userInfo.email}
-                  onChange={(e) =>
-                    setUserInfo({ ...userInfo, email: e.target.value })
-                  }
+                  readOnly
                 ></input>
               </div>
             </div>
-            <button type="submit" className="update__btn--done">
+            <button
+              type="submit"
+              className="update__btn--done"
+              onClick={handleSubmit}
+            >
               수정하기
             </button>
           </form>

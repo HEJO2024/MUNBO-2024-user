@@ -1,11 +1,9 @@
 import "../../styles/components/button/Ans.css";
 
 import PropTypes from "prop-types";
-import testQuiz2 from "../../data/testQuiz2";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-
-// import axios from "axios";
 
 export default function Ans({
   quizType,
@@ -19,58 +17,132 @@ export default function Ans({
   setCheckAns,
   last,
   dislike,
+  quizId,
+  quizIndex,
+  setQuizIndex,
+  quizzes,
 }) {
   const navigate = useNavigate();
   const [correctNum, setCorrectNum] = useState(0);
   const [totalNum, setTotalNum] = useState(0);
 
   const handleCheckAns = () => {
-    // if (selected === 0) {
-    //   setSelected(answer);
-    //   handleResult("#3A86FF");
-    // } else {
-    //   if (selected === answer) {
-    //     setCorrectNum(correctNum + 1);
-    //     setTotalNum(totalNum + 1);
-    //     handleResult("#3A86FF");
-    //   } else {
-    //     setTotalNum(totalNum + 1);
-    //     handleResult("#C93737");
-    //   }
-    // }
-    // setCheckAns(true);
+    if (quizType === "note-Essay") {
+      setCheckAns(true);
+      if (selected === answer) {
+        setCorrectNum(correctNum + 1);
+        setTotalNum(totalNum + 1);
+      } else {
+        setTotalNum(totalNum + 1);
+      }
+    }
+    if (quizType === "note-TF") {
+      setCheckAns(true);
+      setSelected(answer);
+      if (selected === answer) {
+        setCorrectNum(correctNum + 1);
+        setTotalNum(totalNum + 1);
+      } else {
+        setTotalNum(totalNum + 1);
+      }
+    }
+    if (quizType === "note-MCQ" || quizType === "test" || quizType === "ai") {
+      // if (selected === 0) {
+      //   setSelected(answer);
+      //   handleResult("#3A86FF");
+      // } else {
+      //   if (selected === answer) {
+      //     setCorrectNum(correctNum + 1);
+      //     setTotalNum(totalNum + 1);
+      //     handleResult("#3A86FF");
+      //   } else {
+      //     setTotalNum(totalNum + 1);
+      //     handleResult("#C93737");
+      //   }
+      // }
+      // setCheckAns(true);
 
-    setSelected(answer);
-    handleResult("#3A86FF");
-    setCheckAns(true);
-    if (selected === answer) {
-      setCorrectNum(correctNum + 1);
-      setTotalNum(totalNum + 1);
-    } else {
-      setTotalNum(totalNum + 1);
+      setSelected(answer);
+      handleResult("#3A86FF");
+      setCheckAns(true);
+      if (selected === answer || selected === answer[0]) {
+        setCorrectNum(correctNum + 1);
+        setTotalNum(totalNum + 1);
+      } else {
+        setTotalNum(totalNum + 1);
+      }
     }
   };
 
   const handleNext = () => {
-    // axios
-    //   .get("", {})
-    //   .then((response) => {
-    //     console.log(response);
-    //     if (response.status === 200) {
-    //       setQuiz(response.data.quiz);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
-    setQuiz(testQuiz2);
-    setCheckAns(false);
-    handleResult("#006D77");
-    setSelected(0);
+    const token = sessionStorage.getItem("token");
+    if (quizType === "test") {
+      axios
+        .get(
+          "/api/quiz/test_next",
+          {
+            params: {
+              quizId: quizId,
+              userAnsw: selected,
+              is_correct: selected === answer,
+            },
+          },
+          {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          }
+        )
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            setQuiz(response.data.quiz);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      setCheckAns(false);
+      handleResult("#006D77");
+      setSelected(0);
+    }
+    if (quizType === "note-MCQ" || quizType === "ai") {
+      const nextIndex = quizIndex + 1;
+      if (nextIndex < quizzes.length) {
+        setQuizIndex(nextIndex);
+        setQuiz(quizzes[nextIndex]);
+        setCheckAns(false);
+        handleResult("#006D77");
+        setSelected(0);
+      }
+    }
+    if (quizType === "note-Essay") {
+      const nextIndex = quizIndex + 1;
+      if (nextIndex < quizzes.length) {
+        setQuizIndex(nextIndex);
+        setQuiz(quizzes[nextIndex]);
+        setCheckAns(false);
+      }
+    }
+    if (quizType === "note-TF") {
+      const nextIndex = quizIndex + 1;
+      if (nextIndex < quizzes.length) {
+        setQuizIndex(nextIndex);
+        setQuiz(quizzes[nextIndex]);
+        setCheckAns(false);
+        setSelected("");
+      }
+    }
   };
 
   const handleQuit = () => {
-    if (quizType === "test" || quizType === "note") {
+    if (
+      quizType === "test" ||
+      quizType === "ai" ||
+      quizType === "note-Essay" ||
+      quizType === "note-MCQ" ||
+      quizType === "note-TF"
+    ) {
       navigate("/quiz/score", {
         state: {
           quizType: quizType,
@@ -89,13 +161,15 @@ export default function Ans({
         </button>
       ) : (
         <>
-          <button
-            className="ans__btn"
-            style={{ marginRight: "1rem" }}
-            onClick={() => setVeiwSolve(true)}
-          >
-            해설보기
-          </button>
+          {quizType === "test" && (
+            <button
+              className="ans__btn"
+              style={{ marginRight: "1rem" }}
+              onClick={() => setVeiwSolve(true)}
+            >
+              해설보기
+            </button>
+          )}
           <button
             className="ans__btn ans__btn--next"
             onClick={last ? handleQuit : handleNext}
@@ -120,4 +194,8 @@ Ans.propTypes = {
   setCheckAns: PropTypes.func.isRequired,
   last: PropTypes.bool.isRequired,
   dislike: PropTypes.bool.isRequired,
+  quizId: PropTypes.number.isRequired,
+  quizIndex: PropTypes.number.isRequired,
+  setQuizIndex: PropTypes.func.isRequired,
+  quizzes: PropTypes.array.isRequired,
 };

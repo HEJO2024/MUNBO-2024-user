@@ -48,25 +48,29 @@ export default function Join() {
     return regex.test(password);
   };
 
-  const handleIdCheck = async () => {
-    try {
-      const response = await axios.post(
-        "http://52.78.80.253:3000/users/checkDuplicate_id",
-        {
-          userId: id,
+  const handleIdCheck = () => {
+    event.preventDefault();
+
+    axios
+      .post("/api/users/checkDuplicate_id", { userId: id })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          setIdValid(true);
+        } else {
+          setIdValid(false);
         }
-      );
-      if (response.status === 200) {
-        setIdValid(true);
-      } else {
-        setIdValid(false);
-      }
-    } catch (error) {
-      console.error(error);
-    }
+      })
+      .catch((error) => {
+        if (error.response.status === 400) {
+          setIdValid(false);
+        } else {
+          console.error(error);
+        }
+      });
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
     if (
@@ -78,29 +82,26 @@ export default function Join() {
       name &&
       email
     ) {
-      try {
-        const response = await axios.post(
-          "http://52.78.80.253:3000/users/join",
-          {
-            userId: id,
-            passwd: password,
-            userName: name,
-            userEmail: email,
+      axios
+        .post("/api/users/join", {
+          userId: id,
+          passwd: password,
+          userName: name,
+          userEmail: email,
+        })
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            setShowAlert({
+              message: "가입을 축하드립니다!",
+              type: "ok",
+              okHandler: () => navigate("/"),
+            });
           }
-        );
-        if (response.status === 200) {
-          setShowAlert({
-            message: "가입을 축하드립니다!",
-            type: "ok",
-            okHandler: () => navigate("/"),
-          });
-          navigate("/");
-        }
-      } catch (error) {
-        // 이메일 검사
-        // 기타 오류 처리
-        console.error(error);
-      }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     } else {
       setShowAlert({
         message: "모든 항목에 올바르게 기입해주세요.",

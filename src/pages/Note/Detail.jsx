@@ -10,7 +10,7 @@ import axios from "axios";
 
 export default function Detail() {
   const navigate = useNavigate();
-  const noteId = useParams();
+  const noteId = useParams().noteId;
   const [noteData, setNoteData] = useState([]);
   const [showAlert, setShowAlert] = useState({
     message: "",
@@ -21,11 +21,13 @@ export default function Detail() {
 
   useEffect(() => {
     fetchNoteDetail();
-  });
+  }, []);
 
   const fetchNoteDetail = () => {
     axios
-      .post("", { noteId: noteId })
+      .get("/api/summaryNote/note/view", {
+        params: { noteId: parseInt(noteId) },
+      })
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
@@ -41,22 +43,26 @@ export default function Detail() {
     setShowAlert({
       message: "삭제하시겠습니까?",
       type: "",
-      okHandler: () => deleteNote,
+      okHandler: deleteNote,
       cancelHandler: () => setShowAlert({ message: "" }),
     });
   };
 
   const deleteNote = () => {
-    axios.post("", { noteId: noteId }).then((response) => {
-      console.log(response);
-      if (response.status === 200) {
-        setShowAlert({
-          message: "삭제되었습니다!",
-          type: "ok",
-          okHandler: () => navigate("/note"),
-        });
-      }
-    });
+    axios
+      .delete("/api/summaryNote/note/delete", {
+        data: { noteId: noteId },
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          setShowAlert({
+            message: "삭제되었습니다!",
+            type: "ok",
+            okHandler: () => navigate("/note"),
+          });
+        }
+      });
   };
 
   return (
@@ -64,12 +70,9 @@ export default function Detail() {
       <Header />
       <div className="detail__container">
         <div className="detail__wrapper">
-          <p className="detail__title">클래스</p>
-          <p className="detail__date">작성일: 2024.01.08</p>
-          <div className="detail__content">
-            객체지향 프로그래밍에서 데이터와 해당 데이터를 처리하는 메소드를
-            함께 묶어놓은 추상화된 틀
-          </div>
+          <p className="detail__title">{noteData.summaryTitle}</p>
+          <p className="detail__date">{noteData.summaryDate}</p>
+          <div className="detail__content">{noteData.summaryText}</div>
           <div className="detail__btn">
             <div className="detail__btn-container1">
               <button

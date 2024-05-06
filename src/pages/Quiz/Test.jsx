@@ -5,18 +5,17 @@ import Header from "../../components/Header";
 import MenuBar from "../../components/MenuBar";
 import Solve from "../../components/Solve";
 import testQuiz1 from "../../data/testQuiz1";
+import { useLocation } from "react-router-dom";
 import { useState } from "react";
 
-// import { useLocation } from "react-router-dom";
-
 export default function Test() {
-  // const location = useLocation();
-  const [quiz, setQuiz] = useState(testQuiz1);
+  const location = useLocation();
+  const [quiz, setQuiz] = useState(location.state.quiz);
   const [veiwSolve, setVeiwSolve] = useState(false);
   const [selected, setSelected] = useState(0);
   const [selectedColor, setSelectedColor] = useState("#006D77");
   const [checkAns, setCheckAns] = useState(false);
-
+  console.log(quiz);
   const handleSelection = (option) => {
     if (!checkAns) {
       setSelected(option);
@@ -33,11 +32,11 @@ export default function Test() {
         <Header />
         <div className="test__container">
           <div className="test__wrapper">
-            <div className="test__subject">{quiz.subject}</div>
-            <p className="test__question">{quiz.question}</p>
-            {quiz.questionImg_url && (
+            {/* <div className="test__subject"></div> */}
+            <p className="test__question">{quiz.quizContent}</p>
+            {/* {quiz.questionImg_url && (
               <img src={quiz.questionImg_url} alt="이미지" />
-            )}
+            )} */}
             <div
               className="test__choice"
               onClick={() => handleSelection(1)}
@@ -47,7 +46,7 @@ export default function Test() {
                 pointerEvents: checkAns ? "none" : "auto",
               }}
             >
-              ①&nbsp; {quiz.options[0]}
+              ①&nbsp; {quiz.answ_1}
             </div>
             <div
               className="test__choice"
@@ -58,7 +57,7 @@ export default function Test() {
                 pointerEvents: checkAns ? "none" : "auto",
               }}
             >
-              ②&nbsp; {quiz.options[1]}
+              ②&nbsp; {quiz.answ_2}
             </div>
             <div
               className="test__choice"
@@ -69,7 +68,7 @@ export default function Test() {
                 pointerEvents: checkAns ? "none" : "auto",
               }}
             >
-              ③&nbsp; {quiz.options[2]}
+              ③&nbsp; {quiz.answ_3}
             </div>
             <div
               className="test__choice"
@@ -81,7 +80,7 @@ export default function Test() {
                 pointerEvents: checkAns ? "none" : "auto",
               }}
             >
-              ④&nbsp; {quiz.options[3]}
+              ④&nbsp; {quiz.answ_4}
             </div>
             <Ans
               quizType="test"
@@ -89,11 +88,12 @@ export default function Test() {
               setQuiz={setQuiz}
               selected={selected}
               setSelected={setSelected}
-              answer={quiz.answer}
+              answer={quiz.r_answ}
               handleResult={handleResult}
               checkAns={checkAns}
               setCheckAns={setCheckAns}
-              last={quiz.last}
+              last={location.state.last}
+              quizId={quiz.quizId}
             />
           </div>
         </div>
@@ -102,8 +102,8 @@ export default function Test() {
       {veiwSolve && (
         <Solve
           setViewSolve={setVeiwSolve}
-          answer={quiz.options[quiz.answer - 1]}
-          solve={quiz.solve}
+          answer={quiz.r_answ}
+          solve={quiz.wrgAnsw_explanation}
         />
       )}
     </>

@@ -57,10 +57,10 @@
   text-align: center;
 }
 .note__table th:nth-child(1) {
-  width: 85%;
+  width: 75%;
 }
 .note__table td:nth-child(1) {
-  width: 85%;
+  width: 75%;
   text-decoration: underline;
   font-size: 1.15rem;
   cursor: pointer;

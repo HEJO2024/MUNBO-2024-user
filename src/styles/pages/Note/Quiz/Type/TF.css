@@ -1,0 +1,50 @@
+.TF {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+}
+.TF::-webkit-scrollbar {
+  display: none;
+}
+.TF-hidden-scroll {
+  overflow: hidden;
+}
+.TF__container {
+  width: 100%;
+  height: auto;
+  margin-top: 60px;
+  margin-bottom: 85px;
+  padding-top: 3rem;
+}
+.TF__wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.TF__icon {
+  width: 85%;
+  max-width: 800px;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  margin-bottom: 2.5rem;
+}
+.TF__question {
+  width: 85%;
+  font-size: 1.25rem;
+  line-height: 1.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 3rem;
+}
+.TF__options {
+  margin-top: 3rem;
+  margin-bottom: 6rem;
+}
+.TF__selected {
+  transform: scale(1.2);
+}

@@ -48,28 +48,19 @@ export default function MenuBar({ icon }) {
       home: icon === "home" ? "#000" : "#C0C0C0",
       note: icon === "note" ? "#000" : "#C0C0C0",
     });
-    if (icon === "quiz") {
-      navigate("/quiz");
+    if (sessionStorage.getItem("token")) {
+      if (icon === "quiz") {
+        navigate("/quiz");
+      }
+      if (icon === "note") {
+        navigate("/note");
+      }
+    } else {
+      navigate("/login");
     }
     if (icon === "home") {
       navigate("/");
     }
-    if (icon === "note") {
-      navigate("/note");
-    }
-    // if (sessionStorage.getItem("token")) {
-    //   if (icon === "quiz") {
-    //     navigate("/quiz");
-    //   }
-    //   if (icon === "home") {
-    //     navigate("/");
-    //   }
-    //   if (icon === "note") {
-    //     navigate("/note");
-    //   }
-    // } else {
-    //   navigate("/login");
-    // }
   };
 
   return (

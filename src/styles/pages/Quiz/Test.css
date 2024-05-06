@@ -40,19 +40,23 @@
 }
 .test__question {
   width: 85%;
+  max-width: 700px;
   font-size: 1.25rem;
+  font-weight: 600;
   line-height: 1.7rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 3rem;
+  margin-bottom: 5rem;
+  margin-top: 1rem;
 }
 .test__choice {
   width: 85%;
+  max-width: 600px;
   font-size: 1.25rem;
   line-height: 1.7rem;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   margin-bottom: 3rem;
 }

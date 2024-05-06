@@ -14,18 +14,22 @@ export default function Create() {
   const [content, setContent] = useState("");
 
   const handleSummary = () => {
-    axios.post("", { text: content }).then((response) => {
-      console.log(response);
-      if (response.status === 200) {
-        navigate("note/summary", {
-          state: {
-            title: title,
-            summaryId: response.data.summaryId,
-            summaryContent: response.data.summaryText,
-          },
-        });
-      }
-    });
+    axios
+      .post("/api/summaryNote/create", { text: content })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          navigate("/note/summary", {
+            state: {
+              title: title,
+              summaryId: response.data.summaryId,
+              summaryContent: {
+                __html: response.data.summaryText.replace(/\n/g, "<br>"),
+              },
+            },
+          });
+        }
+      });
   };
 
   return (
@@ -68,12 +72,7 @@ export default function Create() {
             >
               목록
             </button>
-            <button
-              className="create__btn--summary"
-              onClick={() => {
-                navigate("/note/summary");
-              }}
-            >
+            <button className="create__btn--summary" onClick={handleSummary}>
               요약하기
             </button>
           </div>

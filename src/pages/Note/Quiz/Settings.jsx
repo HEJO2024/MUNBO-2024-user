@@ -7,13 +7,14 @@ import Dropdown from "../../../components/Dropdown";
 import Header from "../../../components/Header";
 import MenuBar from "../../../components/MenuBar";
 import axios from "axios";
+import testQuiz1 from "../../../data/testQuiz1";
 import { useState } from "react";
 
 export default function Settings() {
   const navigate = useNavigate();
   const location = useLocation();
   const [num, setNum] = useState(0);
-  const [type, setType] = useState("");
+  const [type, setType] = useState(null);
   const [lang, setLang] = useState("");
   const [etc, setEtc] = useState("");
   const [showAlert, setShowAlert] = useState({
@@ -22,14 +23,13 @@ export default function Settings() {
     okHandler: null,
     cancelHandler: null,
   });
-  const [quiz, setQuiz] = useState();
+  const [quiz, setQuiz] = useState(testQuiz1);
 
   const handleEtcChange = (e) => {
     setEtc(e.target.value);
   };
   const handleSubmit = () => {
-    navigate("/note/quiz/MCQ");
-    if (!num || !type || !lang || !etc) {
+    if (num === 0 || type === null || !lang || !etc) {
       setShowAlert({
         message: "모든 항목을 입력해주세요.",
         type: "ok",
@@ -37,31 +37,40 @@ export default function Settings() {
       });
       return;
     }
-    // 요약노트 내용도 같이 보내기?
-    axios
-      .post("", {
-        summaryId: location.state.summaryId,
-        quizNum: num,
-        quizType: type,
-        summaryLanguage: lang,
-        userRequest: etc,
-      })
-      .then((response) => {
-        console.log(response);
-        if (response.status === 200) {
-          setQuiz(response.data.quiz);
-          if (type === "객관식(4지선다)") {
-            navigate("/note/quiz/MCQ", { state: { quiz: quiz } });
-          } else if (type == "주관식") {
-            navigate("/note/quiz/essay", { state: { quiz: quiz } });
-          } else if (type === "OX 퀴즈") {
-            navigate("/note/quiz/TF", { state: { quiz: quiz } });
-          }
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+
+    if (type === 0) {
+      navigate("/note/quiz/MCQ", { state: { quiz: quiz } });
+    } else if (type === 1) {
+      navigate("/note/quiz/essay", { state: { quiz: quiz } });
+    } else if (type === 2) {
+      navigate("/note/quiz/TF", { state: { quiz: quiz } });
+    }
+
+    // axios
+    //   .post("/api/summaryNote/quiz_solve", {
+    //     summaryId: location.state.summaryId,
+    //     quizNum: num,
+    //     quizType: type,
+    //     Q_language: lang,
+    //     userRequirements: etc,
+    //   })
+    //   .then((response) => {
+    //     console.log(response);
+    //     console.log(response.data.jsonData[0]);
+    //     if (response.status === 200) {
+    //       setQuiz([response.data.jsonData]);
+    //       if (type === 0) {
+    //         navigate("/note/quiz/MCQ", { state: { quiz: quiz } });
+    //       } else if (type === 1) {
+    //         navigate("/note/quiz/essay", { state: { quiz: quiz } });
+    //       } else if (type === 2) {
+    //         navigate("/note/quiz/TF", { state: { quiz: quiz } });
+    //       }
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.error(error);
+    //   });
   };
 
   return (
@@ -83,7 +92,7 @@ export default function Settings() {
           />
           <Dropdown
             message="언어"
-            options={["한국어", "영어"]}
+            options={["Korean", "English"]}
             defaultOption="언어를 선택해주세요."
             onSelect={(option) => setLang(option)}
           />

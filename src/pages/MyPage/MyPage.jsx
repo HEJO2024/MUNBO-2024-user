@@ -19,11 +19,16 @@ export default function MyPage() {
   });
 
   const resignHandler = () => {
+    const token = sessionStorage.getItem("token");
     axios
-      .post("", {})
+      .delete("/api/users/delete", {
+        headers: { authorization: `Bearer ${token}` },
+      })
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
+          sessionStorage.removeItem("userName");
+          sessionStorage.removeItem("token");
           setShowAlert({
             message: "탈퇴되었습니다!",
             type: "ok",
@@ -44,7 +49,7 @@ export default function MyPage() {
           <div className="mypage__profile">
             <img src={Profile} alt="프로필 사진"></img>
             <span>
-              <b>홍길동</b> 님
+              <b>{sessionStorage.getItem("userName")}</b> 님
             </span>
           </div>
           <button

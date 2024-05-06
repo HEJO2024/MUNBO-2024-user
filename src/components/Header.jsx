@@ -34,7 +34,7 @@ export default function Header() {
               </span>
             ) : (
               <span className="header__user">
-                <b>홍길동</b> 님
+                <b>{sessionStorage.getItem("userName")}</b> 님
               </span>
             )}
             <img

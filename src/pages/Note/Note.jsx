@@ -6,7 +6,6 @@ import CreateIcon from "../../assets/icon/icon_create-note.svg";
 import Header from "../../components/Header";
 import MenuBar from "../../components/MenuBar";
 import axios from "axios";
-import noteTest from "../../data/noteTest";
 import { useNavigate } from "react-router-dom";
 
 export default function Note() {
@@ -20,7 +19,7 @@ export default function Note() {
   const fetchNoteList = () => {
     const token = sessionStorage.getItem("token");
     axios
-      .get("", {
+      .get("/api/summaryNote/note/listView", {
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -59,7 +58,7 @@ export default function Note() {
               </tr>
             </thead>
             <tbody>
-              {noteTest.map((item, index) => (
+              {noteList.map((item, index) => (
                 <tr key={item.noteId}>
                   <td onClick={() => navigate(`/note/detail/${item.noteId}`)}>
                     {item.summaryTitle}
@@ -70,7 +69,7 @@ export default function Note() {
               ))}
             </tbody>
           </table>
-          <div className="note__footer">
+          {/* <div className="note__footer">
             <span style={{ cursor: "pointer" }}>
               &lt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </span>
@@ -78,7 +77,7 @@ export default function Note() {
             <span style={{ cursor: "pointer" }}>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
       <MenuBar icon="note" />

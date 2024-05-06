@@ -15,7 +15,11 @@ export default function Dropdown({
   const handleOptionClick = (option) => {
     setSelected(option);
     setIsOpen(false);
-    onSelect(option);
+    let valueToSend = option;
+    if (option === "객관식(4지선다)") valueToSend = 0;
+    else if (option === "주관식") valueToSend = 1;
+    else if (option === "OX 퀴즈") valueToSend = 2;
+    onSelect(valueToSend);
   };
 
   return (
