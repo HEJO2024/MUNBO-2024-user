@@ -16,11 +16,13 @@ export default function Ans({
   checkAns,
   setCheckAns,
   last,
+  setLast,
   dislike,
   quizId,
   quizIndex,
   setQuizIndex,
   quizzes,
+  userAns,
 }) {
   const navigate = useNavigate();
   const [correctNum, setCorrectNum] = useState(0);
@@ -28,13 +30,26 @@ export default function Ans({
 
   const handleCheckAns = () => {
     if (quizType === "note-Essay") {
-      setCheckAns(true);
-      if (selected === answer) {
-        setCorrectNum(correctNum + 1);
-        setTotalNum(totalNum + 1);
-      } else {
-        setTotalNum(totalNum + 1);
-      }
+      axios
+        .post("/api/summaryNote/quiz_grading", {
+          userAnsw: userAns,
+          quizId: quizId,
+        })
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            setCheckAns(true);
+            if (response.data.is_correct) {
+              setCorrectNum(correctNum + 1);
+              setTotalNum(totalNum + 1);
+            } else {
+              setTotalNum(totalNum + 1);
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
     if (quizType === "note-TF") {
       setCheckAns(true);
@@ -78,25 +93,21 @@ export default function Ans({
     const token = sessionStorage.getItem("token");
     if (quizType === "test") {
       axios
-        .get(
-          "/api/quiz/test_next",
-          {
-            params: {
-              quizId: quizId,
-              userAnsw: selected,
-              is_correct: selected === answer,
-            },
+        .get("/api/quiz/test_next", {
+          params: {
+            quizId: quizId,
+            userAnsw: selected,
+            is_correct: selected === answer,
           },
-          {
-            headers: {
-              authorization: `Bearer ${token}`,
-            },
-          }
-        )
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        })
         .then((response) => {
           console.log(response);
           if (response.status === 200) {
-            setQuiz(response.data.quiz);
+            setQuiz(response.data.quizData);
+            setLast(response.data.lastQuiz);
           }
         })
         .catch((error) => {
@@ -107,31 +118,70 @@ export default function Ans({
       setSelected(0);
     }
     if (quizType === "note-MCQ" || quizType === "ai") {
-      const nextIndex = quizIndex + 1;
-      if (nextIndex < quizzes.length) {
-        setQuizIndex(nextIndex);
-        setQuiz(quizzes[nextIndex]);
-        setCheckAns(false);
-        handleResult("#006D77");
-        setSelected(0);
-      }
+      axios
+        .post("/api/quiz/ai_assessment", {
+          userAssessment: dislike,
+          quizId: quizId,
+        })
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            const nextIndex = quizIndex + 1;
+            if (nextIndex < quizzes.length) {
+              setQuizIndex(nextIndex);
+              setQuiz(quizzes[nextIndex]);
+              setCheckAns(false);
+              handleResult("#006D77");
+              setSelected(0);
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
     if (quizType === "note-Essay") {
-      const nextIndex = quizIndex + 1;
-      if (nextIndex < quizzes.length) {
-        setQuizIndex(nextIndex);
-        setQuiz(quizzes[nextIndex]);
-        setCheckAns(false);
-      }
+      axios
+        .post("/api/quiz/ai_assessment", {
+          userAssessment: dislike,
+          quizId: quizId,
+        })
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            const nextIndex = quizIndex + 1;
+            if (nextIndex < quizzes.length) {
+              setQuizIndex(nextIndex);
+              setQuiz(quizzes[nextIndex]);
+              setCheckAns(false);
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
     if (quizType === "note-TF") {
-      const nextIndex = quizIndex + 1;
-      if (nextIndex < quizzes.length) {
-        setQuizIndex(nextIndex);
-        setQuiz(quizzes[nextIndex]);
-        setCheckAns(false);
-        setSelected("");
-      }
+      axios
+        .post("/api/quiz/ai_assessment", {
+          userAssessment: dislike,
+          quizId: quizId,
+        })
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            const nextIndex = quizIndex + 1;
+            if (nextIndex < quizzes.length) {
+              setQuizIndex(nextIndex);
+              setQuiz(quizzes[nextIndex]);
+              setCheckAns(false);
+              setSelected("");
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
@@ -198,4 +248,6 @@ Ans.propTypes = {
   quizIndex: PropTypes.number.isRequired,
   setQuizIndex: PropTypes.func.isRequired,
   quizzes: PropTypes.array.isRequired,
+  setLast: PropTypes.func.isRequired,
+  userAns: PropTypes.string.isRequired,
 };

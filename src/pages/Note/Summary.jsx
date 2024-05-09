@@ -39,7 +39,7 @@ export default function Summary() {
           setShowAlert({
             message: "저장되었습니다!",
             type: "ok",
-            okHandler: () => navigate("/note"),
+            okHandler: () => setShowAlert({ message: "" }),
           });
         }
       })

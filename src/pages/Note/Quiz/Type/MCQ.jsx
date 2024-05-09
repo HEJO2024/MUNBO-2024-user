@@ -95,7 +95,7 @@ export default function MCQ() {
               onClick={handleSaveBtn}
             ></img>
           </div>
-          <p className="MCQ__question">{quiz.question}</p>
+          <p className="MCQ__question">{quiz.quizContent}</p>
           {/* {quiz.questionImg_url && (
               <img src={quiz.questionImg_url} alt="이미지" />
             )} */}
@@ -108,7 +108,7 @@ export default function MCQ() {
               pointerEvents: checkAns ? "none" : "auto",
             }}
           >
-            A.&nbsp; {quiz.options[0]}
+            A.&nbsp; {quiz.answ.answ_1}
           </div>
           <div
             className="MCQ__choice"
@@ -119,7 +119,7 @@ export default function MCQ() {
               pointerEvents: checkAns ? "none" : "auto",
             }}
           >
-            B.&nbsp; {quiz.options[1]}
+            B.&nbsp; {quiz.answ.answ_2}
           </div>
           <div
             className="MCQ__choice"
@@ -130,7 +130,7 @@ export default function MCQ() {
               pointerEvents: checkAns ? "none" : "auto",
             }}
           >
-            C.&nbsp; {quiz.options[2]}
+            C.&nbsp; {quiz.answ.answ_3}
           </div>
           <div
             className="MCQ__choice"
@@ -142,14 +142,14 @@ export default function MCQ() {
               pointerEvents: checkAns ? "none" : "auto",
             }}
           >
-            D.&nbsp; {quiz.options[3]}
+            D.&nbsp; {quiz.answ.answ_4}
           </div>
           <Ans
             quizType="note-MCQ"
             setQuiz={setQuiz}
             selected={selected}
             setSelected={setSelected}
-            answer={quiz.answer}
+            answer={quiz.r_answ}
             handleResult={handleResult}
             checkAns={checkAns}
             setCheckAns={setCheckAns}
@@ -158,6 +158,7 @@ export default function MCQ() {
             setQuizIndex={setQuizIndex}
             last={isLastQuiz}
             quizzes={quizzes}
+            quizId={quiz.quizId}
           />
         </div>
       </div>

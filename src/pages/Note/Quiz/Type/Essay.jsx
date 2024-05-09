@@ -86,19 +86,19 @@ export default function Essay() {
               onClick={handleSaveBtn}
             ></img>
           </div>
-          <p className="Essay__question">{quiz.question}</p>
+          <p className="Essay__question">{quiz.quizContent}</p>
           {!checkAns ? (
             <textarea
               placeholder="답을 입력해주세요."
               onChange={userAnsChange}
             ></textarea>
           ) : (
-            <div className="Essay__answer">{quiz.answer}</div>
+            <div className="Essay__answer">{quiz.r_answ}</div>
           )}
           <Ans
             quizType="note-Essay"
             setQuiz={setQuiz}
-            answer={quiz.answer}
+            answer={quiz.r_answ}
             checkAns={checkAns}
             setCheckAns={setCheckAns}
             dislike={dislike}
@@ -106,6 +106,8 @@ export default function Essay() {
             setQuizIndex={setQuizIndex}
             last={isLastQuiz}
             quizzes={quizzes}
+            userAns={userAns}
+            quizId={quiz.quizId}
           />
         </div>
       </div>

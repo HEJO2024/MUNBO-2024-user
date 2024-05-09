@@ -90,7 +90,7 @@ export default function TF() {
               onClick={handleSaveBtn}
             ></img>
           </div>
-          <p className="TF__question">{quiz.question}</p>
+          <p className="TF__question">{quiz.quizContent}</p>
           <div className="TF__options">
             {checkAns ? (
               selected === "O" ? (
@@ -121,7 +121,7 @@ export default function TF() {
             setQuiz={setQuiz}
             selected={selected}
             setSelected={setSelected}
-            answer={quiz.answer}
+            answer={quiz.r_answ}
             checkAns={checkAns}
             setCheckAns={setCheckAns}
             dislike={dislike}
@@ -129,6 +129,7 @@ export default function TF() {
             setQuizIndex={setQuizIndex}
             last={isLastQuiz}
             quizzes={quizzes}
+            quizId={quiz.quizId}
           />
         </div>
       </div>

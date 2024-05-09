@@ -15,9 +15,10 @@ import { useState } from "react";
 
 export default function AI() {
   const location = useLocation();
-  const [quizIndex, setQuizIndex] = useState(0); // 다음 퀴즈를 가리키는 인덱스
-  const [quizzes, setQuizzes] = useState(location.state.quiz); // 전체 퀴즈 배열을 state로 관리
-  const [quiz, setQuiz] = useState(quizzes[quizIndex]); // 현재 퀴즈
+  const [quizIndex, setQuizIndex] = useState(0);
+  // const [quizzes, setQuizzes] = useState(location.state.quiz);
+  // const [quiz, setQuiz] = useState(quizzes[quizIndex]);
+  const [quiz, setQuiz] = useState(location.state.quiz);
   const [selected, setSelected] = useState(0);
   const [selectedColor, setSelectedColor] = useState("#006D77");
   const [checkAns, setCheckAns] = useState(false);
@@ -67,7 +68,7 @@ export default function AI() {
       .catch((error) => console.log(error));
   };
 
-  const isLastQuiz = quizIndex === location.state.quiz.length - 1;
+  // const isLastQuiz = quizIndex === location.state.quiz.length - 1;
 
   return (
     <div className="AI">
@@ -95,7 +96,7 @@ export default function AI() {
               onClick={handleSaveBtn}
             ></img>
           </div>
-          <p className="AI__question">{quiz.question}</p>
+          <p className="AI__question">{quiz.quizContent}</p>
           <div
             className="AI__choice"
             onClick={() => handleSelection("A")}
@@ -105,7 +106,7 @@ export default function AI() {
               pointerEvents: checkAns ? "none" : "auto",
             }}
           >
-            A.&nbsp; {quiz.options[0]}
+            A.&nbsp; {quiz.answ.answ_1}
           </div>
           <div
             className="AI__choice"
@@ -116,7 +117,7 @@ export default function AI() {
               pointerEvents: checkAns ? "none" : "auto",
             }}
           >
-            B.&nbsp; {quiz.options[1]}
+            B.&nbsp; {quiz.answ.answ_2}
           </div>
           <div
             className="AI__choice"
@@ -127,7 +128,7 @@ export default function AI() {
               pointerEvents: checkAns ? "none" : "auto",
             }}
           >
-            C.&nbsp; {quiz.options[2]}
+            C.&nbsp;{quiz.answ.answ_3}
           </div>
           <div
             className="AI__choice"
@@ -139,22 +140,22 @@ export default function AI() {
               pointerEvents: checkAns ? "none" : "auto",
             }}
           >
-            D.&nbsp; {quiz.options[3]}
+            D.&nbsp; {quiz.answ.answ_4}
           </div>
           <Ans
             quizType="ai"
             setQuiz={setQuiz}
             selected={selected}
             setSelected={setSelected}
-            answer={quiz.answer}
+            answer={quiz.r_answ}
             handleResult={handleResult}
             checkAns={checkAns}
             setCheckAns={setCheckAns}
             dislike={dislike}
             quizIndex={quizIndex}
             setQuizIndex={setQuizIndex}
-            last={isLastQuiz}
-            quizzes={quizzes}
+            // last={isLastQuiz}
+            // quizzes={quizzes}
           />
         </div>
       </div>

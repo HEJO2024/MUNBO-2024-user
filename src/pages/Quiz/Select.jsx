@@ -32,20 +32,35 @@ export default function Select() {
       const token = sessionStorage.getItem("token");
       if (quizType === "ai") {
         axios
-          .post(
-            "",
-            { certificate: certificate },
-            {
-              headers: {
-                authorization: `Bearer ${token}`,
-              },
-            }
-          )
+          .get("/api/quiz/check_quizLog", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
           .then((response) => {
             console.log(response);
-            // 진단평가 안한 경우에는 quiz/test로 이동하도록, quiz/go-test로 자격증 정보 전달
             if (response.status === 200) {
-              navigate("/quiz/ai", { state: { quiz: response.data.quizData } });
+              if (response.data.quizLog) {
+                axios
+                  .get("/api/quiz/ai_solve", {
+                    headers: {
+                      Authorization: `Bearer ${token}`,
+                    },
+                  })
+                  .then((response) => {
+                    console.log(response);
+                    if (response.status === 200) {
+                      navigate("/quiz/ai", {
+                        state: { quiz: response.data.aiQuiz },
+                      });
+                    }
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              } else {
+                navigate("/quiz/go-test");
+              }
             }
           })
           .catch((error) => console.log(error));

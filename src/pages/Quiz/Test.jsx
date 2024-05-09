@@ -15,6 +15,7 @@ export default function Test() {
   const [selected, setSelected] = useState(0);
   const [selectedColor, setSelectedColor] = useState("#006D77");
   const [checkAns, setCheckAns] = useState(false);
+  const [last, setLast] = useState(location.state.last);
   console.log(quiz);
   const handleSelection = (option) => {
     if (!checkAns) {
@@ -44,6 +45,7 @@ export default function Test() {
                 color: selected === 1 ? selectedColor : "",
                 fontWeight: selected === 1 ? "600" : "",
                 pointerEvents: checkAns ? "none" : "auto",
+                cursor: "pointer",
               }}
             >
               ①&nbsp; {quiz.answ_1}
@@ -55,6 +57,7 @@ export default function Test() {
                 color: selected === 2 ? selectedColor : "",
                 fontWeight: selected === 2 ? "600" : "",
                 pointerEvents: checkAns ? "none" : "auto",
+                cursor: "pointer",
               }}
             >
               ②&nbsp; {quiz.answ_2}
@@ -66,6 +69,7 @@ export default function Test() {
                 color: selected === 3 ? selectedColor : "",
                 fontWeight: selected === 3 ? "600" : "",
                 pointerEvents: checkAns ? "none" : "auto",
+                cursor: "pointer",
               }}
             >
               ③&nbsp; {quiz.answ_3}
@@ -78,6 +82,7 @@ export default function Test() {
                 color: selected === 4 ? selectedColor : "",
                 fontWeight: selected === 4 ? "600" : "",
                 pointerEvents: checkAns ? "none" : "auto",
+                cursor: "pointer",
               }}
             >
               ④&nbsp; {quiz.answ_4}
@@ -92,7 +97,8 @@ export default function Test() {
               handleResult={handleResult}
               checkAns={checkAns}
               setCheckAns={setCheckAns}
-              last={location.state.last}
+              last={last}
+              setLast={setLast}
               quizId={quiz.quizId}
             />
           </div>

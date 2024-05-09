@@ -27,7 +27,8 @@ export default function Home() {
               className="home__btn"
               onClick={
                 sessionStorage.getItem("token")
-                  ? () => navigate("/quiz/select")
+                  ? () =>
+                      navigate("/quiz/select", { state: { quizType: "ai" } })
                   : () => navigate("/login")
               }
             >

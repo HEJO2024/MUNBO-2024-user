@@ -7,8 +7,9 @@ import Dropdown from "../../../components/Dropdown";
 import Header from "../../../components/Header";
 import MenuBar from "../../../components/MenuBar";
 import axios from "axios";
-import testQuiz1 from "../../../data/testQuiz1";
 import { useState } from "react";
+
+// import testQuiz1 from "../../../data/testQuiz1";
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ export default function Settings() {
     okHandler: null,
     cancelHandler: null,
   });
-  const [quiz, setQuiz] = useState(testQuiz1);
+  // const [quiz, setQuiz] = useState([]);
 
   const handleEtcChange = (e) => {
     setEtc(e.target.value);
@@ -38,39 +39,44 @@ export default function Settings() {
       return;
     }
 
-    if (type === 0) {
-      navigate("/note/quiz/MCQ", { state: { quiz: quiz } });
-    } else if (type === 1) {
-      navigate("/note/quiz/essay", { state: { quiz: quiz } });
-    } else if (type === 2) {
-      navigate("/note/quiz/TF", { state: { quiz: quiz } });
-    }
+    // if (type === 0) {
+    //   navigate("/note/quiz/MCQ", { state: { quiz: quiz } });
+    // } else if (type === 1) {
+    //   navigate("/note/quiz/essay", { state: { quiz: quiz } });
+    // } else if (type === 2) {
+    //   navigate("/note/quiz/TF", { state: { quiz: quiz } });
+    // }
 
-    // axios
-    //   .post("/api/summaryNote/quiz_solve", {
-    //     summaryId: location.state.summaryId,
-    //     quizNum: num,
-    //     quizType: type,
-    //     Q_language: lang,
-    //     userRequirements: etc,
-    //   })
-    //   .then((response) => {
-    //     console.log(response);
-    //     console.log(response.data.jsonData[0]);
-    //     if (response.status === 200) {
-    //       setQuiz([response.data.jsonData]);
-    //       if (type === 0) {
-    //         navigate("/note/quiz/MCQ", { state: { quiz: quiz } });
-    //       } else if (type === 1) {
-    //         navigate("/note/quiz/essay", { state: { quiz: quiz } });
-    //       } else if (type === 2) {
-    //         navigate("/note/quiz/TF", { state: { quiz: quiz } });
-    //       }
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    //   });
+    axios
+      .post("/api/summaryNote/quiz_solve", {
+        summaryId: location.state.summaryId,
+        quizNum: num,
+        quizType: type,
+        Q_language: lang,
+        userRequirements: etc,
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          // setQuiz(response.data.quizData);
+          if (type === 0) {
+            navigate("/note/quiz/MCQ", {
+              state: { quiz: response.data.quizData },
+            });
+          } else if (type === 1) {
+            navigate("/note/quiz/essay", {
+              state: { quiz: response.data.quizData },
+            });
+          } else if (type === 2) {
+            navigate("/note/quiz/TF", {
+              state: { quiz: response.data.quizData },
+            });
+          }
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
