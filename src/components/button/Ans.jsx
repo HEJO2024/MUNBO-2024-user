@@ -107,12 +107,13 @@ export default function Ans({
   const handleNext = () => {
     const token = sessionStorage.getItem("token");
     if (quizType === "test") {
+      const isCorrect = selected === answer ? 1 : 0;
       axios
         .get("/api/quiz/test_next", {
           params: {
             quizId: quizId,
             userAnsw: selected,
-            is_correct: selected === answer,
+            is_correct: isCorrect,
           },
           headers: {
             authorization: `Bearer ${token}`,
