@@ -48,6 +48,9 @@ export default function Update() {
       })
       .catch((error) => {
         console.log(error);
+        if (error.response && error.response.status === 401) {
+          navigate("/login");
+        }
       });
   };
 
@@ -95,6 +98,9 @@ export default function Update() {
         })
         .catch((error) => {
           console.error(error);
+          if (error.response && error.response.status === 401) {
+            navigate("/login");
+          }
         });
     } else {
       setShowAlert({

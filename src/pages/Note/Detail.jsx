@@ -48,6 +48,53 @@ export default function Detail() {
     });
   };
 
+  const savedQuiz = () => {
+    const token = sessionStorage.getItem("token");
+    axios
+      .get("/api/quiz/note/view", {
+        params: { is_summary: 1 },
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          if (response.data.quizData[0].quizType === 0) {
+            navigate("/note/quiz/MCQ", {
+              state: {
+                quiz: response.data.quizData,
+                quizType: "saved-MCQ",
+                noteId: noteId,
+              },
+            });
+          } else if (response.data.quizData[0].quizType === 1) {
+            navigate("/note/quiz/essay", {
+              state: {
+                quiz: response.data.quizData,
+                quizType: "saved-Essay",
+                noteId: noteId,
+              },
+            });
+          } else if (response.data.quizData[0].quizType === 2) {
+            navigate("/note/quiz/TF", {
+              state: {
+                quiz: response.data.quizData,
+                quizType: "saved-TF",
+                noteId: noteId,
+              },
+            });
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.response && error.response.status === 401) {
+          navigate("/login");
+        }
+      });
+  };
+
   const deleteNote = () => {
     axios
       .delete("/api/summaryNote/note/delete", {
@@ -62,6 +109,9 @@ export default function Detail() {
             okHandler: () => navigate("/note"),
           });
         }
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -77,7 +127,7 @@ export default function Detail() {
             <div className="detail__btn-container1">
               <button
                 onClick={() => {
-                  navigate(-1);
+                  navigate("/note");
                 }}
               >
                 목록
@@ -96,7 +146,9 @@ export default function Detail() {
               </button>
             </div>
             <div className="detail__btn-container2">
-              <button className="detail__btn--save">저장된 문제</button>
+              <button className="detail__btn--save" onClick={savedQuiz}>
+                저장된 문제
+              </button>
             </div>
           </div>
         </div>

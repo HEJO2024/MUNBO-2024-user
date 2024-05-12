@@ -44,7 +44,13 @@
   height: 11.875rem;
   border: none;
   border-radius: 1.25rem;
-  background: #4284ed;
+  background: linear-gradient(
+    141deg,
+    #1665e4 4.47%,
+    rgba(66, 132, 237, 0.91) 56.32%,
+    #1667e9 94.26%
+  );
+
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;

@@ -6,6 +6,11 @@
   justify-content: end;
   margin-bottom: 3rem;
 }
+.ans__btn-container {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
 .ans__btn {
   border: none;
   border-radius: 3.125rem;
@@ -18,7 +23,15 @@
   padding: 10px 25px;
   cursor: pointer;
 }
-.ans__btn--next {
+.ans__btn--next .ans__btn--previous {
   background: #805b10;
   color: #fae588;
+}
+.ans__btn--delete {
+  background: #c1121f;
+  color: #fff;
+}
+.ans__btn--solve {
+  width: 50%;
+  max-width: 200px;
 }

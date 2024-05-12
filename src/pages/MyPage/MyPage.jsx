@@ -38,6 +38,9 @@ export default function MyPage() {
       })
       .catch((error) => {
         console.log(error);
+        if (error.response && error.response.status === 401) {
+          navigate("/login");
+        }
       });
   };
 

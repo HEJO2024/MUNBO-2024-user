@@ -2,6 +2,7 @@ import "../../../../styles/pages/Note/Quiz/Type/TF.css";
 
 import Alert from "../../../../components/Alert";
 import Ans from "../../../../components/button/Ans";
+import Empty from "../../../../components/Empty";
 import False from "../../../../assets/false.svg";
 import Header from "../../../../components/Header";
 import MenuBar from "../../../../components/MenuBar";
@@ -38,7 +39,7 @@ export default function TF() {
     setShowAlert({
       message: "문제를 저장할까요?",
       type: "",
-      okHandler: () => handleSave,
+      okHandler: handleSave,
       cancelHandler: () =>
         setShowAlert({
           message: "",
@@ -47,8 +48,17 @@ export default function TF() {
   };
 
   const handleSave = () => {
+    const token = sessionStorage.getItem("token");
     axios
-      .post("", {})
+      .post(
+        "/api/quiz/ai_save",
+        { quizId: quiz.quizId },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
@@ -69,68 +79,81 @@ export default function TF() {
       <Header />
       <div className="TF__container">
         <div className="TF__wrapper">
-          <div className="TF__icon">
-            {!dislike ? (
-              <img
-                src={ThumbIcon1}
-                alt="비추천"
-                onClick={() => setDislike(true)}
-              ></img>
-            ) : (
-              <img
-                src={ThumbIcon2}
-                alt="비추천"
-                onClick={() => setDislike(false)}
-              ></img>
-            )}
-            <img
-              src={SaveIcon}
-              alt="저장"
-              style={{ marginLeft: "0.5rem" }}
-              onClick={handleSaveBtn}
-            ></img>
-          </div>
-          <p className="TF__question">{quiz.quizContent}</p>
-          <div className="TF__options">
-            {checkAns ? (
-              selected === "O" ? (
-                <img src={True} alt="True" className="TF__selected" />
-              ) : (
-                <img src={False} alt="False" className="TF__selected" />
-              )
-            ) : (
-              <>
-                <img
-                  src={True}
-                  alt="True"
-                  style={{ marginRight: "6rem" }}
-                  className={selected === "O" ? "TF__selected" : ""}
-                  onClick={() => handleSelection("O")}
-                />
-                <img
-                  src={False}
-                  alt="False"
-                  className={selected === "X" ? "TF__selected" : ""}
-                  onClick={() => handleSelection("X")}
-                />
-              </>
-            )}
-          </div>
-          <Ans
-            quizType="note-TF"
-            setQuiz={setQuiz}
-            selected={selected}
-            setSelected={setSelected}
-            answer={quiz.r_answ}
-            checkAns={checkAns}
-            setCheckAns={setCheckAns}
-            dislike={dislike}
-            quizIndex={quizIndex}
-            setQuizIndex={setQuizIndex}
-            last={isLastQuiz}
-            quizzes={quizzes}
-            quizId={quiz.quizId}
-          />
+          {quizzes.length === 0 ? (
+            <Empty message="저장된 문제가 없어요." />
+          ) : (
+            <>
+              <div className="TF__icon">
+                {!dislike ? (
+                  <img
+                    src={ThumbIcon1}
+                    alt="비추천"
+                    onClick={() => setDislike(true)}
+                    style={{ cursor: "pointer" }}
+                  ></img>
+                ) : (
+                  <img
+                    src={ThumbIcon2}
+                    alt="비추천"
+                    onClick={() => setDislike(false)}
+                    style={{ cursor: "pointer" }}
+                  ></img>
+                )}
+                {location.state.quizType !== "saved-TF" && (
+                  <img
+                    src={SaveIcon}
+                    alt="저장"
+                    style={{ marginLeft: "0.5rem", cursor: "pointer" }}
+                    onClick={handleSaveBtn}
+                  ></img>
+                )}
+              </div>
+              <p className="TF__question">{quiz.quizContent}</p>
+              <div className="TF__options">
+                {checkAns ? (
+                  selected === "O" ? (
+                    <img src={True} alt="True" className="TF__selected" />
+                  ) : (
+                    <img src={False} alt="False" className="TF__selected" />
+                  )
+                ) : (
+                  <>
+                    <img
+                      src={True}
+                      alt="True"
+                      style={{ marginRight: "6rem" }}
+                      className={selected === "O" ? "TF__selected" : ""}
+                      onClick={() => handleSelection("O")}
+                    />
+                    <img
+                      src={False}
+                      alt="False"
+                      className={selected === "X" ? "TF__selected" : ""}
+                      onClick={() => handleSelection("X")}
+                    />
+                  </>
+                )}
+              </div>
+              <Ans
+                quizType={location.state.quizType}
+                setQuiz={setQuiz}
+                selected={selected}
+                setSelected={setSelected}
+                answer={quiz.r_answ}
+                checkAns={checkAns}
+                setCheckAns={setCheckAns}
+                dislike={dislike}
+                setDislike={setDislike}
+                quizIndex={quizIndex}
+                setQuizIndex={setQuizIndex}
+                last={isLastQuiz}
+                quizzes={quizzes}
+                quizId={quiz.quizId}
+                setShowAlert={setShowAlert}
+                noteId={location.state.noteId}
+              />
+            </>
+          )}
         </div>
       </div>
       <MenuBar icon="note" />

@@ -5,11 +5,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Alert from "../../../components/Alert";
 import Dropdown from "../../../components/Dropdown";
 import Header from "../../../components/Header";
+import Loading from "../../../components/Loading";
 import MenuBar from "../../../components/MenuBar";
 import axios from "axios";
 import { useState } from "react";
-
-// import testQuiz1 from "../../../data/testQuiz1";
 
 export default function Settings() {
   const navigate = useNavigate();
@@ -24,7 +23,7 @@ export default function Settings() {
     okHandler: null,
     cancelHandler: null,
   });
-  // const [quiz, setQuiz] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleEtcChange = (e) => {
     setEtc(e.target.value);
@@ -38,15 +37,7 @@ export default function Settings() {
       });
       return;
     }
-
-    // if (type === 0) {
-    //   navigate("/note/quiz/MCQ", { state: { quiz: quiz } });
-    // } else if (type === 1) {
-    //   navigate("/note/quiz/essay", { state: { quiz: quiz } });
-    // } else if (type === 2) {
-    //   navigate("/note/quiz/TF", { state: { quiz: quiz } });
-    // }
-
+    setLoading(true);
     axios
       .post("/api/summaryNote/quiz_solve", {
         summaryId: location.state.summaryId,
@@ -58,25 +49,25 @@ export default function Settings() {
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
-          // setQuiz(response.data.quizData);
           if (type === 0) {
             navigate("/note/quiz/MCQ", {
-              state: { quiz: response.data.quizData },
+              state: { quiz: response.data.quizData, quizType: "note-MCQ" },
             });
           } else if (type === 1) {
             navigate("/note/quiz/essay", {
-              state: { quiz: response.data.quizData },
+              state: { quiz: response.data.quizData, quizType: "note-Essay" },
             });
           } else if (type === 2) {
             navigate("/note/quiz/TF", {
-              state: { quiz: response.data.quizData },
+              state: { quiz: response.data.quizData, quizType: "note-TF" },
             });
           }
         }
       })
       .catch((error) => {
         console.error(error);
-      });
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -123,6 +114,7 @@ export default function Settings() {
           cancelHandler={showAlert.cancelHandler}
         />
       )}
+      {loading && <Loading message="문제를 생성하는 중입니다..." />}
     </div>
   );
 }

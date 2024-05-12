@@ -55,7 +55,7 @@ export default function Login() {
         console.log(response);
         if (response.status === 200) {
           sessionStorage.setItem("token", response.data.token);
-          sessionStorage.setItem("userName", response.data.userName)
+          sessionStorage.setItem("userName", response.data.userName);
           navigate("/");
         }
       })

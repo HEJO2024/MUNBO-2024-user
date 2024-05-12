@@ -1,20 +1,14 @@
 import "../styles/components/Header.css";
 
-import { useEffect, useState } from "react";
-
 import HamburgerIcon from "../assets/icon/icon_hamburger.svg";
 import Logo from "../assets/logo.svg";
 import MenuTab from "./MenuTab";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function Header() {
   const navigate = useNavigate();
   const [tabOpen, setTabOpen] = useState(false);
-  const [token, setToken] = useState("");
-
-  useEffect(() => {
-    setToken(sessionStorage.getItem("token"));
-  });
 
   return (
     <>
@@ -25,7 +19,7 @@ export default function Header() {
             <span className="header__munbo">문보</span>
           </div>
           <div className="header__end">
-            {!token ? (
+            {!sessionStorage.getItem("token") ? (
               <span
                 className="header__login"
                 onClick={() => navigate("/login")}
@@ -46,9 +40,7 @@ export default function Header() {
           </div>
         </div>
       </div>
-      {tabOpen && (
-        <MenuTab setTabOpen={setTabOpen} token={token} setToken={setToken} />
-      )}
+      {tabOpen && <MenuTab setTabOpen={setTabOpen} />}
     </>
   );
 }

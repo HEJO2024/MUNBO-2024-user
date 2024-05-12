@@ -45,6 +45,40 @@ export default function Summary() {
       })
       .catch((error) => {
         console.log(error);
+        if (error.response && error.response.status === 401) {
+          navigate("/login");
+        }
+      });
+  };
+
+  const handleCreate = () => {
+    const token = sessionStorage.getItem("token");
+    axios
+      .post(
+        "/api/summaryNote/note/create",
+        {
+          summaryId: location.state.summaryId,
+          summaryTitle: location.state.title,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        if (response.status === 200) {
+          navigate("/note/quiz/settings", {
+            state: { summaryId: location.state.summaryId },
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.response && error.response.status === 401) {
+          navigate("/login");
+        }
       });
   };
 
@@ -62,14 +96,7 @@ export default function Summary() {
             <button className="summary__btn--save" onClick={handleSave}>
               저장
             </button>
-            <button
-              className="summary__btn--quiz"
-              onClick={() => {
-                navigate("/note/quiz/settings", {
-                  state: { summaryId: location.state.summaryId },
-                });
-              }}
-            >
+            <button className="summary__btn--quiz" onClick={handleCreate}>
               문제 생성
             </button>
           </div>

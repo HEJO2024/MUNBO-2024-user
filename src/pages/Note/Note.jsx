@@ -3,6 +3,7 @@ import "../../styles/pages/Note/Note.css";
 import { useEffect, useState } from "react";
 
 import CreateIcon from "../../assets/icon/icon_create-note.svg";
+import Empty from "../../components/Empty";
 import Header from "../../components/Header";
 import MenuBar from "../../components/MenuBar";
 import axios from "axios";
@@ -32,6 +33,9 @@ export default function Note() {
       })
       .catch((error) => {
         console.log(error);
+        if (error.response && error.response.status === 401) {
+          navigate("/login");
+        }
       });
   };
 
@@ -49,26 +53,30 @@ export default function Note() {
               style={{ cursor: "pointer" }}
             />
           </div>
-          <table className="note__table">
-            <thead>
-              <tr>
-                <th>제목</th>
-                <th>작성일</th>
-                {/* <th>문제</th> */}
-              </tr>
-            </thead>
-            <tbody>
-              {noteList.map((item, index) => (
-                <tr key={item.noteId}>
-                  <td onClick={() => navigate(`/note/detail/${item.noteId}`)}>
-                    {item.summaryTitle}
-                  </td>
-                  <td>{item.summaryDate}</td>
-                  {/* <td>{item.quiz}</td> */}
+          {noteList.length === 0 ? (
+            <Empty message="저장된 요약노트가 없어요." />
+          ) : (
+            <table className="note__table">
+              <thead>
+                <tr>
+                  <th>제목</th>
+                  <th>작성일</th>
+                  {/* <th>문제</th> */}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {noteList.map((item, index) => (
+                  <tr key={item.noteId}>
+                    <td onClick={() => navigate(`/note/detail/${item.noteId}`)}>
+                      {item.summaryTitle}
+                    </td>
+                    <td>{item.summaryDate}</td>
+                    {/* <td>{item.quiz}</td> */}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
           {/* <div className="note__footer">
             <span style={{ cursor: "pointer" }}>
               &lt;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

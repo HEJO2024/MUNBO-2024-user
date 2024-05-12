@@ -1,7 +1,5 @@
 import "../styles/components/MenuTab.css";
 
-import { useEffect, useState } from "react";
-
 import Alert from "./Alert";
 import CloseIcon from "../assets/icon/icon_close.svg";
 import LoginIcon from "../assets/icon/icon_login.svg";
@@ -11,8 +9,9 @@ import NoteIcon from "../assets/icon/NoteIcon";
 import PropTypes from "prop-types";
 import QuizIcon from "../assets/icon/QuizIcon";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-export default function MenuTab({ setTabOpen, token, setToken }) {
+export default function MenuTab({ setTabOpen }) {
   const navigate = useNavigate();
   const [animationClass, setAnimationClass] = useState("");
   const [showAlert, setShowAlert] = useState({
@@ -20,10 +19,6 @@ export default function MenuTab({ setTabOpen, token, setToken }) {
     type: "",
     okHandler: null,
     cancelHandler: null,
-  });
-
-  useEffect(() => {
-    setToken(sessionStorage.getItem("token"));
   });
 
   const closeTab = () => {
@@ -38,8 +33,10 @@ export default function MenuTab({ setTabOpen, token, setToken }) {
       message: "로그아웃하시겠습니까?",
       type: "",
       okHandler: () => {
-        navigate("/");
         sessionStorage.removeItem("token");
+        setShowAlert({ message: "" });
+        setTabOpen(false);
+        navigate("/");
       },
       cancelHandler: () => setShowAlert({ message: "" }),
     });
@@ -98,7 +95,7 @@ export default function MenuTab({ setTabOpen, token, setToken }) {
           </div>
           <hr />
           <div className="menutab__end">
-            {token ? (
+            {sessionStorage.getItem("token") ? (
               <div className="menutab__menu-container" onClick={handleLogout}>
                 <img
                   src={LogoutIcon}
@@ -146,6 +143,4 @@ export default function MenuTab({ setTabOpen, token, setToken }) {
 
 MenuTab.propTypes = {
   setTabOpen: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired,
-  setToken: PropTypes.func.isRequired,
 };

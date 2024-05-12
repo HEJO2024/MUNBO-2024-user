@@ -34,8 +34,10 @@
 }
 .TF__question {
   width: 85%;
-  font-size: 1.25rem;
-  line-height: 1.7rem;
+  max-width: 700px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;

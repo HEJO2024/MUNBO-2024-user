@@ -23,7 +23,7 @@ export default function Quiz() {
           <button
             className="quiz__btn--save"
             onClick={() =>
-              navigate("/quiz/select", { state: { quizType: "save" } })
+              navigate("/quiz/select", { state: { quizType: "saved-ai" } })
             }
           >
             저장한 문제

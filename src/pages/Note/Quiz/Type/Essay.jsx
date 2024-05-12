@@ -2,6 +2,7 @@ import "../../../../styles/pages/Note/Quiz/Type/Essay.css";
 
 import Alert from "../../../../components/Alert";
 import Ans from "../../../../components/button/Ans";
+import Empty from "../../../../components/Empty";
 import Header from "../../../../components/Header";
 import MenuBar from "../../../../components/MenuBar";
 import SaveIcon from "../../../../assets/icon/icon_save.svg";
@@ -30,7 +31,7 @@ export default function Essay() {
     setShowAlert({
       message: "문제를 저장할까요?",
       type: "",
-      okHandler: () => handleSave,
+      okHandler: handleSave,
       cancelHandler: () =>
         setShowAlert({
           message: "",
@@ -39,8 +40,17 @@ export default function Essay() {
   };
 
   const handleSave = () => {
+    const token = sessionStorage.getItem("token");
     axios
-      .post("", {})
+      .post(
+        "/api/quiz/ai_save",
+        { quizId: quiz.quizId },
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
@@ -65,50 +75,63 @@ export default function Essay() {
       <Header />
       <div className="Essay__container">
         <div className="Essay__wrapper">
-          <div className="Essay__icon">
-            {!dislike ? (
-              <img
-                src={ThumbIcon1}
-                alt="비추천"
-                onClick={() => setDislike(true)}
-              ></img>
-            ) : (
-              <img
-                src={ThumbIcon2}
-                alt="비추천"
-                onClick={() => setDislike(false)}
-              ></img>
-            )}
-            <img
-              src={SaveIcon}
-              alt="저장"
-              style={{ marginLeft: "0.5rem" }}
-              onClick={handleSaveBtn}
-            ></img>
-          </div>
-          <p className="Essay__question">{quiz.quizContent}</p>
-          {!checkAns ? (
-            <textarea
-              placeholder="답을 입력해주세요."
-              onChange={userAnsChange}
-            ></textarea>
+          {quizzes.length === 0 ? (
+            <Empty message="저장된 문제가 없어요." />
           ) : (
-            <div className="Essay__answer">{quiz.r_answ}</div>
+            <>
+              <div className="Essay__icon">
+                {!dislike ? (
+                  <img
+                    src={ThumbIcon1}
+                    alt="비추천"
+                    onClick={() => setDislike(true)}
+                    style={{ cursor: "pointer" }}
+                  ></img>
+                ) : (
+                  <img
+                    src={ThumbIcon2}
+                    alt="비추천"
+                    onClick={() => setDislike(false)}
+                    style={{ cursor: "pointer" }}
+                  ></img>
+                )}
+                {location.state.quizType !== "saved-Essay" && (
+                  <img
+                    src={SaveIcon}
+                    alt="저장"
+                    style={{ marginLeft: "0.5rem", cursor: "pointer" }}
+                    onClick={handleSaveBtn}
+                  ></img>
+                )}
+              </div>
+              <p className="Essay__question">{quiz.quizContent}</p>
+              {!checkAns ? (
+                <textarea
+                  placeholder="답을 입력해주세요."
+                  onChange={userAnsChange}
+                ></textarea>
+              ) : (
+                <div className="Essay__answer">{quiz.r_answ}</div>
+              )}
+              <Ans
+                quizType={location.state.quizType}
+                setQuiz={setQuiz}
+                answer={quiz.r_answ}
+                checkAns={checkAns}
+                setCheckAns={setCheckAns}
+                dislike={dislike}
+                setDislike={setDislike}
+                quizIndex={quizIndex}
+                setQuizIndex={setQuizIndex}
+                last={isLastQuiz}
+                quizzes={quizzes}
+                userAns={userAns}
+                quizId={quiz.quizId}
+                setShowAlert={setShowAlert}
+                noteId={location.state.noteId}
+              />
+            </>
           )}
-          <Ans
-            quizType="note-Essay"
-            setQuiz={setQuiz}
-            answer={quiz.r_answ}
-            checkAns={checkAns}
-            setCheckAns={setCheckAns}
-            dislike={dislike}
-            quizIndex={quizIndex}
-            setQuizIndex={setQuizIndex}
-            last={isLastQuiz}
-            quizzes={quizzes}
-            userAns={userAns}
-            quizId={quiz.quizId}
-          />
         </div>
       </div>
       <MenuBar icon="note" />

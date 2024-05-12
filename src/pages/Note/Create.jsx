@@ -3,6 +3,7 @@ import "../../styles/pages/Note/Create.css";
 import AttachIcon from "../../assets/icon/icon_attach.svg";
 import CameraIcon from "../../assets/icon/icon_camera.svg";
 import Header from "../../components/Header";
+import Loading from "../../components/Loading";
 import MenuBar from "../../components/MenuBar";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -12,8 +13,10 @@ export default function Create() {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSummary = () => {
+    setLoading(true);
     axios
       .post("/api/summaryNote/create", { text: content })
       .then((response) => {
@@ -29,7 +32,9 @@ export default function Create() {
             },
           });
         }
-      });
+      })
+      .catch((error) => console.log(error))
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -79,6 +84,7 @@ export default function Create() {
         </div>
       </div>
       <MenuBar icon="note" />
+      {loading && <Loading message="요약하는 중입니다..." />}
     </div>
   );
 }

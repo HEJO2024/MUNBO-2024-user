@@ -34,7 +34,9 @@
 }
 .AI__question {
   width: 85%;
+  max-width: 700px;
   font-size: 1.25rem;
+  font-weight: 600;
   line-height: 1.7rem;
   display: flex;
   align-items: center;

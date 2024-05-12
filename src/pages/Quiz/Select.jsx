@@ -38,7 +38,7 @@ export default function Select() {
             },
           })
           .then((response) => {
-            console.log(response);
+            // console.log(response);
             if (response.status === 200) {
               if (response.data.quizLog) {
                 axios
@@ -51,12 +51,18 @@ export default function Select() {
                     console.log(response);
                     if (response.status === 200) {
                       navigate("/quiz/ai", {
-                        state: { quiz: response.data.aiQuiz },
+                        state: {
+                          quiz: response.data.aiQuiz,
+                          quizType: quizType,
+                        },
                       });
                     }
                   })
                   .catch((error) => {
                     console.log(error);
+                    if (error.response && error.response.status === 401) {
+                      navigate("/login");
+                    }
                   });
               } else {
                 navigate("/quiz/go-test");
@@ -64,26 +70,28 @@ export default function Select() {
             }
           })
           .catch((error) => console.log(error));
-      } else if (quizType === "save") {
+      } else if (quizType === "saved-ai") {
         axios
-          .post(
-            "/api/quiz/",
-            { certificate: certificate },
-            {
-              headers: {
-                authorization: `Bearer ${token}`,
-              },
-            }
-          )
+          .get("/api/quiz/note/view", {
+            params: { is_summary: 0 },
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          })
           .then((response) => {
             console.log(response);
             if (response.status === 200) {
-              navigate("/quiz/save", {
-                state: { quiz: response.data.quizData },
+              navigate("/quiz/ai", {
+                state: { quiz: response.data.quizData, quizType: quizType },
               });
             }
           })
-          .catch((error) => console.log(error));
+          .catch((error) => {
+            console.log(error);
+            if (error.response && error.response.status === 401) {
+              navigate("/login");
+            }
+          });
       } else if (quizType === "test") {
         axios
           .get("/api/quiz/test_solve")

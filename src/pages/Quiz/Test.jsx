@@ -4,7 +4,6 @@ import Ans from "../../components/button/Ans";
 import Header from "../../components/Header";
 import MenuBar from "../../components/MenuBar";
 import Solve from "../../components/Solve";
-import testQuiz1 from "../../data/testQuiz1";
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 
@@ -16,7 +15,7 @@ export default function Test() {
   const [selectedColor, setSelectedColor] = useState("#006D77");
   const [checkAns, setCheckAns] = useState(false);
   const [last, setLast] = useState(location.state.last);
-  console.log(quiz);
+
   const handleSelection = (option) => {
     if (!checkAns) {
       setSelected(option);
@@ -35,9 +34,7 @@ export default function Test() {
           <div className="test__wrapper">
             {/* <div className="test__subject"></div> */}
             <p className="test__question">{quiz.quizContent}</p>
-            {/* {quiz.questionImg_url && (
-              <img src={quiz.questionImg_url} alt="이미지" />
-            )} */}
+            {/* {quiz.quizImg && <img src={quiz.quizImg} alt="이미지" />} */}
             <div
               className="test__choice"
               onClick={() => handleSelection(1)}
