@@ -6,7 +6,6 @@ import MenuBar from "./MenuBar";
 import PropTypes from "prop-types";
 import Solve from "./Solve";
 import StarIcon from "../assets/star.svg";
-import testQuiz1 from "../data/testQuiz1";
 import { useState } from "react";
 
 export default function Original({ orgData, setViewOrg }) {
@@ -18,7 +17,7 @@ export default function Original({ orgData, setViewOrg }) {
   const handleSelection = (option) => {
     setSelected(option);
 
-    if (option === testQuiz1.r_answ) {
+    if (option === orgData.r_answ) {
       setSelectedColor("#3A86FF");
     } else {
       setSelectedColor("#C93737");
