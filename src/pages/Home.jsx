@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import MenuBar from "../components/MenuBar";
 import Munbo from "../assets/munbo.svg";
 import NoteIcon from "../assets/icon/icon_notebtn.svg";
+import QuestionMark from "../assets/question.svg";
 import QuizIcon from "../assets/icon/icon_quizbtn.svg";
 import { useNavigate } from "react-router-dom";
 
@@ -15,6 +16,12 @@ export default function Home() {
       <Header />
       <div className="home__container">
         <div className="home__wrapper">
+          <div className="home__about">
+            <button onClick={() => navigate("/about")}>
+              문보는 어떤 서비스인가요
+              <img src={QuestionMark} alt="물음표"></img>
+            </button>
+          </div>
           <img src={Munbo} alt="Munbo" className="home__munbo"></img>
           <p className="home__text">
             안녕하세요,

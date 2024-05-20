@@ -3,6 +3,7 @@ import "../../styles/pages/Note/Summary.css";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import Alert from "../../components/Alert";
+import BackIcon from "../../assets/icon/icon_back.svg";
 import Header from "../../components/Header";
 import MenuBar from "../../components/MenuBar";
 import axios from "axios";
@@ -87,6 +88,13 @@ export default function Summary() {
       <Header />
       <div className="summary__container">
         <div className="summary__wrapper">
+          <div className="summary__top">
+            <img
+              src={BackIcon}
+              alt="뒤로가기"
+              onClick={() => navigate(-1)}
+            ></img>
+          </div>
           <p className="summary__title">{location.state.title}</p>
           <div
             className="summary__content"

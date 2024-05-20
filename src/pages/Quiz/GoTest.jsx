@@ -1,5 +1,6 @@
 import "../../styles/pages/Quiz/GoTest.css";
 
+import BackIcon from "../../assets/icon/icon_back.svg";
 import Header from "../../components/Header";
 import MenuBar from "../../components/MenuBar";
 import axios from "axios";
@@ -30,6 +31,13 @@ export default function GoTest() {
       <Header />
       <div className="go-test__container">
         <div className="go-test__wrapper">
+          <div className="go-test__top">
+            <img
+              src={BackIcon}
+              alt="뒤로가기"
+              onClick={() => navigate(-1)}
+            ></img>
+          </div>
           <button className="go-test__btn" onClick={handleBtn}>
             진단평가 받기
           </button>

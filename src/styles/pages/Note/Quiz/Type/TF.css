@@ -24,23 +24,38 @@
   justify-content: center;
   align-items: center;
 }
+.TF__top {
+  width: 85%;
+  display: flex;
+  justify-content: start;
+}
 .TF__icon {
   width: 85%;
   max-width: 800px;
   display: flex;
   align-items: center;
   justify-content: end;
-  margin-bottom: 2.5rem;
+  margin-bottom: 2rem;
+}
+.TF__info {
+  width: 85%;
+  max-width: 600px;
+  color: #8b8c89;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: start;
+  margin-bottom: 0.5rem;
 }
 .TF__question {
   width: 85%;
-  max-width: 700px;
+  max-width: 600px;
   font-size: 1.2rem;
   font-weight: 600;
   line-height: 2rem;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   margin-bottom: 3rem;
 }
 .TF__options {

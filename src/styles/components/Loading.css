@@ -16,6 +16,9 @@
   background: #fff;
 }
 .loading__message {
+  width: 80%;
+  line-height: 3rem;
+  text-align: center;
   color: #000;
   font-size: 1.5rem;
   font-family: 800;

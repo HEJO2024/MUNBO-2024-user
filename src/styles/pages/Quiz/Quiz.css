@@ -18,6 +18,12 @@
   justify-content: center;
   align-items: center;
 }
+.quiz__info {
+  width: 85%;
+  max-width: 550px;
+  display: flex;
+  justify-content: start;
+}
 .quiz__btn--aiquiz {
   border: none;
   background-color: #fff;

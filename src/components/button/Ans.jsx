@@ -25,7 +25,7 @@ export default function Ans({
   quizzes,
   userAns,
   setShowAlert,
-  noteId,
+  setLoading,
 }) {
   const navigate = useNavigate();
   const [correctNum, setCorrectNum] = useState(0);
@@ -83,7 +83,7 @@ export default function Ans({
       setSelected(answer);
       handleResult("#3A86FF");
       setCheckAns(true);
-      if (selected === answer || selected === answer[0]) {
+      if (selected === answer || answer.includes(selected)) {
         setCorrectNum(correctNum + 1);
         setTotalNum(totalNum + 1);
       } else {
@@ -136,9 +136,46 @@ export default function Ans({
       handleResult("#006D77");
       setSelected(0);
     }
+    if (quizType === "ai") {
+      axios
+        .post("/api/quiz/ai_assessment", {
+          userAssessment: dislike,
+          quizId: quizId,
+        })
+        .then((response) => {
+          // console.log(response);
+          if (response.status === 200) {
+            setLoading(true);
+            axios
+              .get("/api/quiz/ai_solve", {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+              .then((response) => {
+                console.log(response);
+                if (response.status === 200) {
+                  setQuiz(response.data.aiQuiz);
+                  setCheckAns(false);
+                  handleResult("#006D77");
+                  setSelected(0);
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+                if (error.response && error.response.status === 401) {
+                  navigate("/login");
+                }
+              })
+              .finally(() => setLoading(false));
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
     if (
       quizType === "note-MCQ" ||
-      quizType === "ai" ||
       quizType === "saved-MCQ" ||
       quizType === "saved-ai"
     ) {
@@ -291,7 +328,6 @@ export default function Ans({
           quizType: quizType,
           correctNum: correctNum,
           totalNum: totalNum,
-          noteId: noteId,
         },
       });
     }
@@ -309,14 +345,21 @@ export default function Ans({
 
   const deleteQuiz = () => {
     axios
-      .delete("/api/quiz/note/ai_delete", { data: { noteId: noteId } })
+      .delete("/api/quiz/note/ai_delete", { data: { quizId: quizId } })
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
           setShowAlert({
             message: "삭제되었습니다!",
             type: "ok",
-            okHandler: handleNext,
+            okHandler: () => {
+              if (last) {
+                handleQuit();
+              } else {
+                handleNext();
+              }
+              setShowAlert({ message: "" });
+            },
           });
         }
       })
@@ -384,7 +427,7 @@ export default function Ans({
                 이전
               </button>
             )}
-          {quizType === "test" && (
+          {(quizType === "test" || quizType === "ai") && (
             <button
               className="ans__btn ans__btn--solve"
               style={{ marginRight: "1rem", marginLeft: "1rem" }}
@@ -427,4 +470,6 @@ Ans.propTypes = {
   setShowAlert: PropTypes.func.isRequired,
   setDislike: PropTypes.func.isRequired,
   noteId: PropTypes.string.isRequired,
+  summaryId: PropTypes.number.isRequired,
+  setLoading: PropTypes.func.isRequired,
 };

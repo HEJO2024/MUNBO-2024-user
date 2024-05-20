@@ -3,8 +3,10 @@ import "../../styles/pages/Quiz/Select.css";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import Alert from "../../components/Alert";
+import BackIcon from "../../assets/icon/icon_back.svg";
 import Dropdown from "../../components/Dropdown";
 import Header from "../../components/Header";
+import Loading from "../../components/Loading";
 import MenuBar from "../../components/MenuBar";
 import axios from "axios";
 import { useState } from "react";
@@ -20,6 +22,7 @@ export default function Select() {
     okHandler: null,
     cancelHandler: null,
   });
+  const [loading, setLoading] = useState(false);
 
   const handleBtn = () => {
     if (!certificate) {
@@ -31,6 +34,7 @@ export default function Select() {
     } else {
       const token = sessionStorage.getItem("token");
       if (quizType === "ai") {
+        setLoading(true);
         axios
           .get("/api/quiz/check_quizLog", {
             headers: {
@@ -63,7 +67,8 @@ export default function Select() {
                     if (error.response && error.response.status === 401) {
                       navigate("/login");
                     }
-                  });
+                  })
+                  .finally(() => setLoading(false));
               } else {
                 navigate("/quiz/go-test");
               }
@@ -72,7 +77,7 @@ export default function Select() {
           .catch((error) => console.log(error));
       } else if (quizType === "saved-ai") {
         axios
-          .get("/api/quiz/note/view", {
+          .get("/api/quiz/note/ai_view", {
             params: { is_summary: 0 },
             headers: {
               authorization: `Bearer ${token}`,
@@ -81,7 +86,7 @@ export default function Select() {
           .then((response) => {
             console.log(response);
             if (response.status === 200) {
-              navigate("/quiz/ai", {
+              navigate("/quiz/ai-saved", {
                 state: { quiz: response.data.quizData, quizType: quizType },
               });
             }
@@ -116,9 +121,21 @@ export default function Select() {
       <Header />
       <div className="select__container">
         <div className="select__wrapper">
+          <div className="select__top">
+            <img
+              src={BackIcon}
+              alt="뒤로가기"
+              onClick={() => navigate(-1)}
+            ></img>
+          </div>
           <Dropdown
             message="자격증을 선택해주세요."
-            options={["정보처리기사"]}
+            options={[
+              "정보처리기사",
+              "정보통신기사",
+              "정보보안기사",
+              "전기기사",
+            ]}
             defaultOption="선택"
             onSelect={(option) => setCertificate(option)}
           />
@@ -134,6 +151,13 @@ export default function Select() {
           type={showAlert.type}
           okHandler={showAlert.okHandler}
           cancelHandler={showAlert.cancelHandler}
+        />
+      )}
+      {loading && (
+        <Loading
+          message={`${sessionStorage.getItem(
+            "userName"
+          )}님이 틀린 문제를 기반으로 문제를 생성하고 있어요 😃`}
         />
       )}
     </div>

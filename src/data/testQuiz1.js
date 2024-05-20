@@ -32,25 +32,39 @@
 
 // export default testQuiz1;
 
-const testQuiz1 = [
-  { question: "Q1: 우주는 우리가 아직 완전히 이해한 영역입니다.", answer: "X" },
-  {
-    question: "Q2: 천문학자들은 매일 새로운 발견을 하고 있습니다.",
-    answer: "O",
-  },
-  {
-    question: "Q3: 우주 연구는 우리의 삶에 영향을 미치지 않습니다.",
-    answer: "X",
-  },
-  {
-    question:
-      "Q4: 천문학은 우리가 어디에서 왔는지에 대한 질문에 대답을 제공합니다.",
-    answer: "O",
-  },
-  {
-    question: "Q5: 우주는 변화하지 않고 정적인 상태를 유지하고 있습니다.",
-    answer: "X",
-  },
-];
+// const testQuiz1 = [
+//   { question: "Q1: 우주는 우리가 아직 완전히 이해한 영역입니다.", answer: "X" },
+//   {
+//     question: "Q2: 천문학자들은 매일 새로운 발견을 하고 있습니다.",
+//     answer: "O",
+//   },
+//   {
+//     question: "Q3: 우주 연구는 우리의 삶에 영향을 미치지 않습니다.",
+//     answer: "X",
+//   },
+//   {
+//     question:
+//       "Q4: 천문학은 우리가 어디에서 왔는지에 대한 질문에 대답을 제공합니다.",
+//     answer: "O",
+//   },
+//   {
+//     question: "Q5: 우주는 변화하지 않고 정적인 상태를 유지하고 있습니다.",
+//     answer: "X",
+//   },
+// ];
+
+// export default testQuiz1;
+
+const testQuiz1 = {
+  subject: "소프트웨어 설계",
+  info: "2020년 3회",
+  quizContent: "객체지향 프로그램에서 데이터를 추상화하는 단위는? ",
+  answ_1: "메소드",
+  answ_2: "클래스",
+  answ_3: "상속성",
+  answ_4: "메시지",
+  r_answ: 2,
+  wrgAnsw_explanation: "해설",
+};
 
 export default testQuiz1;

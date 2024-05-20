@@ -11,7 +11,7 @@
   height: auto;
   margin-top: 60px;
   margin-bottom: 85px;
-  padding-top: 3rem;
+  padding-top: 1.5rem;
 }
 .summary__wrapper {
   width: 100%;
@@ -20,6 +20,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.summary__top {
+  width: 88%;
+  display: flex;
+  justify-content: start;
+  margin-bottom: 1.8rem;
 }
 .summary__title {
   width: 85%;
@@ -46,7 +52,7 @@
   max-width: 1400px;
   display: flex;
   justify-content: end;
-  margin-bottom: 2.5rem;
+  margin-bottom: 3.5rem;
 }
 .summary__btn button {
   height: 35px;

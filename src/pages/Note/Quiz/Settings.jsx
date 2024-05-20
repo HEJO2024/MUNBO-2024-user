@@ -3,6 +3,7 @@ import "../../../styles/pages/Note/Quiz/Settings.css";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import Alert from "../../../components/Alert";
+import BackIcon from "../../../assets/icon/icon_back.svg";
 import Dropdown from "../../../components/Dropdown";
 import Header from "../../../components/Header";
 import Loading from "../../../components/Loading";
@@ -51,15 +52,27 @@ export default function Settings() {
         if (response.status === 200) {
           if (type === 0) {
             navigate("/note/quiz/MCQ", {
-              state: { quiz: response.data.quizData, quizType: "note-MCQ" },
+              state: {
+                quiz: response.data.quizData,
+                quizType: "note-MCQ",
+                summaryId: location.state.summaryId,
+              },
             });
           } else if (type === 1) {
             navigate("/note/quiz/essay", {
-              state: { quiz: response.data.quizData, quizType: "note-Essay" },
+              state: {
+                quiz: response.data.quizData,
+                quizType: "note-Essay",
+                summaryId: location.state.summaryId,
+              },
             });
           } else if (type === 2) {
             navigate("/note/quiz/TF", {
-              state: { quiz: response.data.quizData, quizType: "note-TF" },
+              state: {
+                quiz: response.data.quizData,
+                quizType: "note-TF",
+                summaryId: location.state.summaryId,
+              },
             });
           }
         }
@@ -75,6 +88,13 @@ export default function Settings() {
       <Header />
       <div className="settings__container">
         <div className="settings__wrapper">
+          <div className="settings__top">
+            <img
+              src={BackIcon}
+              alt="뒤로가기"
+              onClick={() => navigate(-1)}
+            ></img>
+          </div>
           <Dropdown
             message="문제 수"
             options={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]}
