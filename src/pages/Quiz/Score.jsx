@@ -10,7 +10,7 @@ import axios from "axios";
 export default function Score() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { quizType, correctNum, totalNum, noteId } = location.state;
+  const { quizType, correctNum, totalNum } = location.state;
 
   const btnHandler = () => {
     const token = sessionStorage.getItem("token");
@@ -19,7 +19,7 @@ export default function Score() {
     }
     if (quizType === "ai") {
       axios
-        .get("/api/quiz/note/view", {
+        .get("/api/quiz/note/ai_view", {
           params: { is_summary: 0 },
           headers: {
             authorization: `Bearer ${token}`,
@@ -28,8 +28,8 @@ export default function Score() {
         .then((response) => {
           console.log(response);
           if (response.status === 200) {
-            navigate("/quiz/ai", {
-              state: { quiz: response.data.quizData, quizType: quizType },
+            navigate("/quiz/ai-saved", {
+              state: { quiz: response.data.quizData, quizType: "saved-ai" },
             });
           }
         })
@@ -45,46 +45,7 @@ export default function Score() {
       quizType === "note-Essay" ||
       quizType === "note-TF"
     ) {
-      axios
-        .get("/api/quiz/note/view", {
-          params: { is_summary: 1 },
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        })
-        .then((response) => {
-          console.log(response);
-          if (response.status === 200) {
-            if (response.data.quizData[0].quizType === 0) {
-              navigate("/note/quiz/MCQ", {
-                state: {
-                  quiz: response.data.quizData,
-                  quizType: "saved-MCQ",
-                  noteId: noteId,
-                },
-              });
-            } else if (response.data.quizData[0].quizType === 1) {
-              navigate("/note/quiz/essay", {
-                state: {
-                  quiz: response.data.quizData,
-                  quizType: "saved-Essay",
-                  noteId: noteId,
-                },
-              });
-            } else if (response.data.quizData[0].quizType === 2) {
-              navigate("/note/quiz/TF", {
-                state: {
-                  quiz: response.data.quizData,
-                  quizType: "saved-TF",
-                  noteId: noteId,
-                },
-              });
-            }
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+      navigate("/note");
     }
   };
 

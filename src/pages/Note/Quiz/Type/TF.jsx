@@ -1,7 +1,10 @@
 import "../../../../styles/pages/Note/Quiz/Type/TF.css";
 
+import { useLocation, useNavigate } from "react-router-dom";
+
 import Alert from "../../../../components/Alert";
 import Ans from "../../../../components/button/Ans";
+import BackIcon from "../../../../assets/icon/icon_back.svg";
 import Empty from "../../../../components/Empty";
 import False from "../../../../assets/false.svg";
 import Header from "../../../../components/Header";
@@ -11,10 +14,10 @@ import ThumbIcon1 from "../../../../assets/icon/icon_thumb-down.svg";
 import ThumbIcon2 from "../../../../assets/icon/icon_thumb-down-selected.svg";
 import True from "../../../../assets/true.svg";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
 import { useState } from "react";
 
 export default function TF() {
+  const navigate = useNavigate();
   const location = useLocation();
   const [quizIndex, setQuizIndex] = useState(0); // 다음 퀴즈를 가리키는 인덱스
   const [quizzes, setQuizzes] = useState(location.state.quiz); // 전체 퀴즈 배열을 state로 관리
@@ -51,7 +54,7 @@ export default function TF() {
     const token = sessionStorage.getItem("token");
     axios
       .post(
-        "/api/quiz/ai_save",
+        "/api/quiz/note/ai_save",
         { quizId: quiz.quizId },
         {
           headers: {
@@ -79,6 +82,15 @@ export default function TF() {
       <Header />
       <div className="TF__container">
         <div className="TF__wrapper">
+          {quizzes.length === 0 && (
+            <div className="TF__top">
+              <img
+                src={BackIcon}
+                alt="뒤로가기"
+                onClick={() => navigate(-1)}
+              ></img>
+            </div>
+          )}
           {quizzes.length === 0 ? (
             <Empty message="저장된 문제가 없어요." />
           ) : (
@@ -108,6 +120,7 @@ export default function TF() {
                   ></img>
                 )}
               </div>
+              <p className="TF__info">AI가 만든 문제</p>
               <p className="TF__question">{quiz.quizContent}</p>
               <div className="TF__options">
                 {checkAns ? (
@@ -150,7 +163,6 @@ export default function TF() {
                 quizzes={quizzes}
                 quizId={quiz.quizId}
                 setShowAlert={setShowAlert}
-                noteId={location.state.noteId}
               />
             </>
           )}

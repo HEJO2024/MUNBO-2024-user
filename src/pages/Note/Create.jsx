@@ -1,6 +1,7 @@
 import "../../styles/pages/Note/Create.css";
 
 import AttachIcon from "../../assets/icon/icon_attach.svg";
+import BackIcon from "../../assets/icon/icon_back.svg";
 import CameraIcon from "../../assets/icon/icon_camera.svg";
 import Header from "../../components/Header";
 import Loading from "../../components/Loading";
@@ -42,6 +43,13 @@ export default function Create() {
       <Header />
       <div className="create__container">
         <div className="create__wrapper">
+          <div className="create__top">
+            <img
+              src={BackIcon}
+              alt="뒤로가기"
+              onClick={() => navigate(-1)}
+            ></img>
+          </div>
           <p className="create__title">제목</p>
           <input
             type="text"

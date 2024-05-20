@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Alert from "../../components/Alert";
+import BackIcon from "../../assets/icon/icon_back.svg";
 import Header from "../../components/Header";
 import MenuBar from "../../components/MenuBar";
 import axios from "axios";
@@ -12,6 +13,7 @@ export default function Detail() {
   const navigate = useNavigate();
   const noteId = useParams().noteId;
   const [noteData, setNoteData] = useState([]);
+  const [quizExist, setQuizExist] = useState();
   const [showAlert, setShowAlert] = useState({
     message: "",
     type: "",
@@ -32,6 +34,7 @@ export default function Detail() {
         console.log(response);
         if (response.status === 200) {
           setNoteData(response.data.summaryData);
+          setQuizExist(response.data.quizExists);
         }
       })
       .catch((error) => {
@@ -50,9 +53,17 @@ export default function Detail() {
 
   const savedQuiz = () => {
     const token = sessionStorage.getItem("token");
+    if (quizExist === false) {
+      navigate("/note/quiz/MCQ", {
+        state: {
+          quiz: [],
+        },
+      });
+      return;
+    }
     axios
-      .get("/api/quiz/note/view", {
-        params: { is_summary: 1 },
+      .get("/api/quiz/note/ai_view", {
+        params: { is_summary: noteData.summaryId },
         headers: {
           authorization: `Bearer ${token}`,
         },
@@ -60,28 +71,25 @@ export default function Detail() {
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
-          if (response.data.quizData[0].quizType === 0) {
+          if (response.data.quizType === 0) {
             navigate("/note/quiz/MCQ", {
               state: {
                 quiz: response.data.quizData,
                 quizType: "saved-MCQ",
-                noteId: noteId,
               },
             });
-          } else if (response.data.quizData[0].quizType === 1) {
+          } else if (response.data.quizType === 1) {
             navigate("/note/quiz/essay", {
               state: {
                 quiz: response.data.quizData,
                 quizType: "saved-Essay",
-                noteId: noteId,
               },
             });
-          } else if (response.data.quizData[0].quizType === 2) {
+          } else if (response.data.quizType === 2) {
             navigate("/note/quiz/TF", {
               state: {
                 quiz: response.data.quizData,
                 quizType: "saved-TF",
-                noteId: noteId,
               },
             });
           }
@@ -120,6 +128,13 @@ export default function Detail() {
       <Header />
       <div className="detail__container">
         <div className="detail__wrapper">
+          <div className="detail__top">
+            <img
+              src={BackIcon}
+              alt="뒤로가기"
+              onClick={() => navigate(-1)}
+            ></img>
+          </div>
           <p className="detail__title">{noteData.summaryTitle}</p>
           <p className="detail__date">{noteData.summaryDate}</p>
           <div className="detail__content">{noteData.summaryText}</div>

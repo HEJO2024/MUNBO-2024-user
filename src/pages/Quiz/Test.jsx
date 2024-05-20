@@ -26,13 +26,29 @@ export default function Test() {
     setSelectedColor(color);
   };
 
+  const subjectColors = {
+    "소프트웨어 설계": "#FCF5C7",
+    "소프트웨어 개발": "#FFEBF0",
+    "데이터베이스 구축": "#E9EDC9",
+    "프로그래밍언어 활용": "#F0E3FD",
+    "정보시스템 구축 관리": "#E1EFF6",
+  };
+
+  const subjectColor = subjectColors[quiz.subjectId];
+
   return (
     <>
       <div className={`test ${veiwSolve && "test-hidden-scroll"}`}>
         <Header />
         <div className="test__container">
           <div className="test__wrapper">
-            {/* <div className="test__subject"></div> */}
+            <div
+              className="test__subject"
+              style={{ backgroundColor: subjectColor }}
+            >
+              {quiz.subjectId}
+            </div>
+            <p className="test__info">{quiz.roundId}</p>
             <p className="test__question">{quiz.quizContent}</p>
             {/* {quiz.quizImg && <img src={quiz.quizImg} alt="이미지" />} */}
             <div
@@ -107,6 +123,7 @@ export default function Test() {
           setViewSolve={setVeiwSolve}
           answer={quiz.r_answ}
           solve={quiz.wrgAnsw_explanation}
+          subject={quiz.subjectId}
         />
       )}
     </>

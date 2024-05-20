@@ -11,7 +11,7 @@
   height: auto;
   margin-top: 60px;
   margin-bottom: 85px;
-  padding-top: 3rem;
+  padding-top: 1.5rem;
 }
 .create__wrapper {
   width: 100%;
@@ -20,6 +20,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+.create__top {
+  width: 88%;
+  display: flex;
+  justify-content: start;
+  margin-bottom: 1.8rem;
 }
 .create__title,
 .create__data {

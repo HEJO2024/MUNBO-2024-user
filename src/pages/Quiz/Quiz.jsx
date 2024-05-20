@@ -1,5 +1,6 @@
 import "../../styles/pages/Quiz/Quiz.css";
 
+import BtnInfo from "../../assets/btn-info.svg";
 import Header from "../../components/Header";
 import MenuBar from "../../components/MenuBar";
 import { useNavigate } from "react-router-dom";
@@ -12,13 +13,16 @@ export default function Quiz() {
       <Header />
       <div className="quiz__container">
         <div className="quiz__wrapper">
+          <div className="quiz__info">
+            <img src={BtnInfo} alt="설명"></img>
+          </div>
           <button
             className="quiz__btn--aiquiz"
             onClick={() =>
               navigate("/quiz/select", { state: { quizType: "ai" } })
             }
           >
-            AI 생성 문제 풀기
+            AI가 만든 문제 풀러가기
           </button>
           <button
             className="quiz__btn--save"
@@ -26,7 +30,7 @@ export default function Quiz() {
               navigate("/quiz/select", { state: { quizType: "saved-ai" } })
             }
           >
-            저장한 문제
+            내가 저장한 문제
           </button>
           <button
             className="quiz__btn--test"

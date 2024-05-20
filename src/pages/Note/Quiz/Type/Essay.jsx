@@ -1,7 +1,10 @@
 import "../../../../styles/pages/Note/Quiz/Type/Essay.css";
 
+import { useLocation, useNavigate } from "react-router-dom";
+
 import Alert from "../../../../components/Alert";
 import Ans from "../../../../components/button/Ans";
+import BackIcon from "../../../../assets/icon/icon_back.svg";
 import Empty from "../../../../components/Empty";
 import Header from "../../../../components/Header";
 import MenuBar from "../../../../components/MenuBar";
@@ -9,10 +12,10 @@ import SaveIcon from "../../../../assets/icon/icon_save.svg";
 import ThumbIcon1 from "../../../../assets/icon/icon_thumb-down.svg";
 import ThumbIcon2 from "../../../../assets/icon/icon_thumb-down-selected.svg";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
 import { useState } from "react";
 
 export default function Essay() {
+  const navigate = useNavigate();
   const location = useLocation();
   const [quizIndex, setQuizIndex] = useState(0); // 다음 퀴즈를 가리키는 인덱스
   const [quizzes, setQuizzes] = useState(location.state.quiz); // 전체 퀴즈 배열을 state로 관리
@@ -43,7 +46,7 @@ export default function Essay() {
     const token = sessionStorage.getItem("token");
     axios
       .post(
-        "/api/quiz/ai_save",
+        "/api/quiz/note/ai_save",
         { quizId: quiz.quizId },
         {
           headers: {
@@ -75,6 +78,15 @@ export default function Essay() {
       <Header />
       <div className="Essay__container">
         <div className="Essay__wrapper">
+          {quizzes.length === 0 && (
+            <div className="Essay__top">
+              <img
+                src={BackIcon}
+                alt="뒤로가기"
+                onClick={() => navigate(-1)}
+              ></img>
+            </div>
+          )}
           {quizzes.length === 0 ? (
             <Empty message="저장된 문제가 없어요." />
           ) : (
@@ -104,6 +116,7 @@ export default function Essay() {
                   ></img>
                 )}
               </div>
+              <p className="Essay__info">AI가 만든 문제</p>
               <p className="Essay__question">{quiz.quizContent}</p>
               {!checkAns ? (
                 <textarea
@@ -128,7 +141,6 @@ export default function Essay() {
                 userAns={userAns}
                 quizId={quiz.quizId}
                 setShowAlert={setShowAlert}
-                noteId={location.state.noteId}
               />
             </>
           )}

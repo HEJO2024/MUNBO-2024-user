@@ -4,6 +4,7 @@ import "../src/styles/fonts/font.css";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 import AI from "./pages/Quiz/AI";
+import About from "./pages/About";
 import Create from "./pages/Note/Create";
 import Detail from "./pages/Note/Detail";
 import Essay from "./pages/Note/Quiz/Type/Essay";
@@ -16,6 +17,7 @@ import MyPage from "./pages/MyPage/MyPage";
 import Note from "./pages/Note/Note";
 import NoteUpdate from "./pages/Note/NoteUpdate";
 import Quiz from "./pages/Quiz/Quiz";
+import Saved from "./pages/Quiz/Saved";
 import Score from "./pages/Quiz/Score";
 import Select from "./pages/Quiz/Select";
 import Settings from "./pages/Note/Quiz/Settings";
@@ -32,6 +34,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/join" element={<Join />} />
+          <Route path="/about" element={<About />} />
 
           <Route path="/mypage" element={<MyPage />} />
           <Route path="/mypage/update" element={<Update />} />
@@ -41,6 +44,7 @@ function App() {
           <Route path="/quiz/go-test" element={<GoTest />} />
           <Route path="/quiz/test" element={<Test />} />
           <Route path="/quiz/ai" element={<AI />} />
+          <Route path="/quiz/ai-saved" element={<Saved />} />
           <Route path="/quiz/score" element={<Score />} />
 
           <Route path="/note" element={<Note />} />

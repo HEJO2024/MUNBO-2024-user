@@ -3,6 +3,7 @@ import "../../styles/pages/Note/NoteUpdate.css";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import Alert from "../../components/Alert";
+import BackIcon from "../../assets/icon/icon_back.svg";
 import Header from "../../components/Header";
 import MenuBar from "../../components/MenuBar";
 import axios from "axios";
@@ -47,6 +48,13 @@ export default function NoteUpdate() {
       <Header />
       <div className="note-update__container">
         <div className="note-update__wrapper">
+          <div className="note-update__top">
+            <img
+              src={BackIcon}
+              alt="뒤로가기"
+              onClick={() => navigate(-1)}
+            ></img>
+          </div>
           <p className="note-update__title">제목</p>
           <input
             type="text"
