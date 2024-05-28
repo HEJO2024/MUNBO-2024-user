@@ -29,6 +29,8 @@ export default function Essay() {
     cancelHandler: null,
   });
   const [userAns, setUserAns] = useState("");
+  const [totalNum, setTotalNum] = useState(0);
+  const [correctNum, setCorrectNum] = useState(0);
 
   const handleSaveBtn = () => {
     setShowAlert({
@@ -141,6 +143,10 @@ export default function Essay() {
                 userAns={userAns}
                 quizId={quiz.quizId}
                 setShowAlert={setShowAlert}
+                totalNum={totalNum}
+                correctNum={correctNum}
+                setTotalNum={setTotalNum}
+                setCorrectNum={setCorrectNum}
               />
             </>
           )}

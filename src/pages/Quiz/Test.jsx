@@ -15,6 +15,8 @@ export default function Test() {
   const [selectedColor, setSelectedColor] = useState("#006D77");
   const [checkAns, setCheckAns] = useState(false);
   const [last, setLast] = useState(location.state.last);
+  const [totalNum, setTotalNum] = useState(0);
+  const [correctNum, setCorrectNum] = useState(0);
 
   const handleSelection = (option) => {
     if (!checkAns) {
@@ -113,6 +115,10 @@ export default function Test() {
               last={last}
               setLast={setLast}
               quizId={quiz.quizId}
+              totalNum={totalNum}
+              correctNum={correctNum}
+              setTotalNum={setTotalNum}
+              setCorrectNum={setCorrectNum}
             />
           </div>
         </div>

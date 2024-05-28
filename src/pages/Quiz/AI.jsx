@@ -38,6 +38,8 @@ export default function AI() {
   const [orgData, setOrgData] = useState({});
   const [quizExist, setQuizExist] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [totalNum, setTotalNum] = useState(0);
+  const [correctNum, setCorrectNum] = useState(0);
 
   const handleSelection = (option) => {
     if (!checkAns) {
@@ -219,6 +221,10 @@ export default function AI() {
                   quizId={quiz.quizId}
                   setShowAlert={setShowAlert}
                   setLoading={setLoading}
+                  totalNum={totalNum}
+                  correctNum={correctNum}
+                  setTotalNum={setTotalNum}
+                  setCorrectNum={setCorrectNum}
                 />
               </>
             )}

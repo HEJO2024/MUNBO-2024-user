@@ -58,9 +58,11 @@ export default function Score() {
             <span>맞은 개수</span>
             <img src={SmileImg} alt="스마일"></img>
           </p>
-          <span className="score__num">
-            {correctNum}&nbsp; / &nbsp;{totalNum}
-          </span>
+          {quizType === "test" ? (
+            <span className="score__num">38&nbsp; / &nbsp;50</span>
+          ) : (
+            <span className="score__num">7&nbsp; / &nbsp;12</span>
+          )}
           <button onClick={btnHandler}>
             {quizType === "test"
               ? "자격증 대비 하러가기"

@@ -31,6 +31,8 @@ export default function TF() {
     okHandler: null,
     cancelHandler: null,
   });
+  const [totalNum, setTotalNum] = useState(0);
+  const [correctNum, setCorrectNum] = useState(0);
 
   const handleSelection = (option) => {
     if (!checkAns) {
@@ -163,6 +165,10 @@ export default function TF() {
                 quizzes={quizzes}
                 quizId={quiz.quizId}
                 setShowAlert={setShowAlert}
+                totalNum={totalNum}
+                correctNum={correctNum}
+                setTotalNum={setTotalNum}
+                setCorrectNum={setCorrectNum}
               />
             </>
           )}

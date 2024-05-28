@@ -26,10 +26,14 @@ export default function Ans({
   userAns,
   setShowAlert,
   setLoading,
+  totalNum,
+  correctNum,
+  setTotalNum,
+  setCorrectNum,
 }) {
   const navigate = useNavigate();
-  const [correctNum, setCorrectNum] = useState(0);
-  const [totalNum, setTotalNum] = useState(0);
+  const userSelect = selected;
+  const [isCorrect, setIsCorrect] = useState(0);
 
   const handleCheckAns = () => {
     if (quizType === "note-Essay") {
@@ -81,13 +85,16 @@ export default function Ans({
       // setCheckAns(true);
 
       setSelected(answer);
+      console.log(userSelect);
       handleResult("#3A86FF");
       setCheckAns(true);
-      if (selected === answer || answer.includes(selected)) {
+      if (userSelect === answer || answer.includes(userSelect)) {
         setCorrectNum(correctNum + 1);
         setTotalNum(totalNum + 1);
+        setIsCorrect(1);
       } else {
         setTotalNum(totalNum + 1);
+        setIsCorrect(0);
       }
     }
     if (quizType === "saved-ai" || quizType === "saved-MCQ") {
@@ -107,12 +114,11 @@ export default function Ans({
   const handleNext = () => {
     const token = sessionStorage.getItem("token");
     if (quizType === "test") {
-      const isCorrect = selected === answer ? 1 : 0;
       axios
         .get("/api/quiz/test_next", {
           params: {
             quizId: quizId,
-            userAnsw: selected,
+            userAnsw: userSelect,
             is_correct: isCorrect,
           },
           headers: {
@@ -472,4 +478,8 @@ Ans.propTypes = {
   noteId: PropTypes.string.isRequired,
   summaryId: PropTypes.number.isRequired,
   setLoading: PropTypes.func.isRequired,
+  correctNum: PropTypes.number.isRequired,
+  setCorrectNum: PropTypes.func.isRequired,
+  totalNum: PropTypes.number.isRequired,
+  setTotalNum: PropTypes.func.isRequired,
 };
