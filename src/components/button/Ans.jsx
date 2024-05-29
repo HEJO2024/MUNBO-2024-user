@@ -68,7 +68,7 @@ export default function Ans({
         setTotalNum(totalNum + 1);
       }
     }
-    if (quizType === "note-MCQ" || quizType === "test" || quizType === "ai") {
+    if (quizType === "test" || quizType === "note-MCQ" || quizType === "ai") {
       // if (selected === 0) {
       //   setSelected(answer);
       //   handleResult("#3A86FF");
@@ -85,10 +85,9 @@ export default function Ans({
       // setCheckAns(true);
 
       setSelected(answer);
-      console.log(userSelect);
       handleResult("#3A86FF");
       setCheckAns(true);
-      if (userSelect === answer || answer.includes(userSelect)) {
+      if (userSelect === answer) {
         setCorrectNum(correctNum + 1);
         setTotalNum(totalNum + 1);
         setIsCorrect(1);
@@ -114,6 +113,9 @@ export default function Ans({
   const handleNext = () => {
     const token = sessionStorage.getItem("token");
     if (quizType === "test") {
+      console.log("userSelect", userSelect);
+      console.log("answer", answer);
+      console.log("isCorrect", isCorrect);
       axios
         .get("/api/quiz/test_next", {
           params: {
