@@ -1,14 +1,17 @@
 .home {
   width: 100%;
   height: 100%;
-  position: relative;
+  overflow-y: scroll;
+}
+.home::-webkit-scrollbar {
+  display: none;
 }
 .home__container {
   width: 100%;
   height: auto;
-  position: absolute;
-  top: 60px;
-  bottom: 85px;
+  margin-top: 60px;
+  margin-bottom: 85px;
+  padding-top: 2rem;
 }
 .home__wrapper {
   width: 100%;
@@ -59,6 +62,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 2.5rem;
 }
 .home__btn {
   width: 50%;
